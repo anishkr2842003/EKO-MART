@@ -15,6 +15,15 @@ import OrderTracking from './pages/User/OrderTracking'
 import Address from './pages/User/Address'
 import AccountDetails from './pages/User/AccountDetails'
 import Logout from './pages/User/Logout'
+import Products from './pages/Products/Products'
+import SingleProduct from './pages/Products/SingleProduct'
+import Layout from './pages/admin/Layout'
+import Dashboard from './pages/admin/Dashboard'
+import AllProducts from './pages/admin/AllProducts'
+import AddProduct from './pages/admin/AddProduct'
+import Category from './pages/admin/Category'
+import AddCategory from './pages/admin/AddCategory'
+import AdminLogin from './pages/admin/AdminLogin'
 
 
 function App() {
@@ -35,12 +44,24 @@ function App() {
         <Route path='logout' element={<Logout/>}/>
       </Route>
 
+      <Route path='/singleProduct' element={<SingleProduct/>}/>
+      <Route path='/products' element={<Products/>}/>
       <Route path='/signup' element={<Signup/>}/>
       <Route path='/login' element={<Login/>}/>
 
+      <Route path='/admin/login' element={<AdminLogin/>}/>
+
+      <Route path='/admin' element={<Layout/>}>
+        <Route index element={<Dashboard/>}/>
+        <Route path='allproducts' element={<AllProducts/>}/>
+        <Route path='addproduct' element={<AddProduct/>}/>
+        <Route path='allcategory' element={<Category/>}/>
+        <Route path='addcategory' element={<AddCategory/>}/>
+      </Route>
 
 
-      {/* <Route path='*' element={<Error404/>}/> */}
+
+      <Route path='*' element={<Error404/>}/>
      </Routes>
     </>
   )

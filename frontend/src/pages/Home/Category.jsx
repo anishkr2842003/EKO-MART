@@ -57,21 +57,23 @@ function Category() {
     <>
       <StyledSwiper>
         <Swiper
-          spaceBetween={30} // Space between slides
+          spaceBetween={10} // Reduce space between slides for smaller screens
           slidesPerView={10} // Default is 10 slides at a time for large screens
-        //   navigation={{
-        //     // Enable navigation arrows
-        //     nextEl: ".swiper-button-next",
-        //     prevEl: ".swiper-button-prev",
-        //   }}
           pagination={{ clickable: true }} // Enable pagination dots
           breakpoints={{
-            // Customize slide views for different screen sizes
+            320: {
+              slidesPerView: 1, // 1 slide for very small screens
+              spaceBetween: 10, // Adjust space between slides for smaller screens
+            },
+            480: {
+              slidesPerView: 2, // 2 slides for small screens
+              spaceBetween: 10, // Adjust space between slides for small screens
+            },
             640: {
-              slidesPerView: 1, // 1 slide for smaller screens
+              slidesPerView: 3, // 3 slides for slightly larger screens
             },
             768: {
-              slidesPerView: 2, // 2 slides for medium screens
+              slidesPerView: 4, // 4 slides for medium screens
             },
             1024: {
               slidesPerView: 5, // Adjust to 5 for larger screens if necessary

@@ -79,29 +79,33 @@ function FeaturedSection() {
             <div className="col-lg-12">
               <div className="category-area-main-wrapper-one">
                 <StyledSwiper>
-                  <Swiper
-                    modules={[Navigation]} // Include any necessary modules
-                    spaceBetween={30} // Space between slides
-                    slidesPerView={6} // Default is 10 slides at a time for large screens
+                <Swiper
+                    modules={[Navigation, Pagination]} // Ensure the Navigation module is imported
+                    spaceBetween={10} // Adjust space between slides
+                    slidesPerView={6} // Default number of slides for large screens
                     navigation={{
-                      // Enable navigation arrows
-                      nextEl: ".swiper-button-next",
-                      prevEl: ".swiper-button-prev",
+                      nextEl: ".swiper-button-next", // Target the next button
+                      prevEl: ".swiper-button-prev", // Target the previous button
                     }}
-                    pagination={{ clickable: true }} // Enable pagination dots
                     breakpoints={{
-                      // Customize slide views for different screen sizes
-                      640: {
-                        slidesPerView: 1, // 1 slide for smaller screens
+                      320: {
+                        slidesPerView: 1, // 1 slide for small screens (mobile)
+                        spaceBetween: 10, // Reduce space between slides
+                      },
+                      480: {
+                        slidesPerView: 2, // 2 slides for slightly larger screens
+                        spaceBetween: 10,
                       },
                       768: {
-                        slidesPerView: 2, // 2 slides for medium screens
+                        slidesPerView: 3, // 3 slides for tablets
+                        spaceBetween: 20,
                       },
                       1024: {
-                        slidesPerView: 5, // Adjust to 5 for larger screens if necessary
+                        slidesPerView: 5, // 5 slides for desktops
+                        spaceBetween: 30,
                       },
                       1200: {
-                        slidesPerView: 6, // Maintain 10 slides for very large screens (>= 1200px)
+                        slidesPerView: 6, // 6 slides for large screens
                       },
                     }}
                   >
