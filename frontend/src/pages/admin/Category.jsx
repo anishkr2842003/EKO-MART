@@ -55,7 +55,7 @@ const Category = () => {
   useEffect(()=>{
     const fetchCategories = async()=>{
       try {
-        const response = await axios.get('https://eko-mart.onrender.com/api/allcategory');
+        const response = await axios.get('http://localhost:8000/api/allcategory');
           setCategories(response.data.categories);
         setLoading(false)
         // console.log(response)

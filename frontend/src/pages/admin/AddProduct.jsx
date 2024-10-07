@@ -46,7 +46,7 @@ function AddProduct() {
         toast.error("Only 5 images upload")
       } else {
         try {
-          const response = await axios.post('https://eko-mart.onrender.com/api/addproduct', formData, {
+          const response = await axios.post('http://localhost:8000/api/addproduct', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
