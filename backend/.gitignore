@@ -1,3 +1,6 @@
+
+
+# ignore this file from git
 .env
 
 uploads/

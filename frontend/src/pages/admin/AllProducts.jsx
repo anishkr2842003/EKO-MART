@@ -100,7 +100,7 @@ const AllProducts = () => {
                 <button className="delete-btn">Delete</button>
               </td>
             </tr>
-          )) : <tr><td><h4>No product found</h4></td></tr>
+          )) : <tr><td colSpan={5}><h4>No product found</h4></td></tr>
           }
         </tbody>
       </ProductTable>
