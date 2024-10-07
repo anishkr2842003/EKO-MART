@@ -25,7 +25,7 @@ function AddCategory() {
       toast.error("All fileds are required")
     } else {
       try {
-        const response = await axios.post('http://localhost:8000/api/addcategory', formData, {
+        const response = await axios.post('https://eko-mart.onrender.com/api/addcategory', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         // console.log(response.data.message)
