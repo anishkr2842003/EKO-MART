@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import api from '../../utils/api';
 
 const ProductTable = styled.table`
   width: 100%;
@@ -55,7 +56,7 @@ const Category = () => {
   useEffect(()=>{
     const fetchCategories = async()=>{
       try {
-        const response = await axios.get('https://eko-mart.onrender.com/api/allcategory');
+        const response = await api.get('/api/allcategory');
           setCategories(response.data.categories);
         setLoading(false)
         // console.log(response)

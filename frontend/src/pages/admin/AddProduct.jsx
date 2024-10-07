@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../utils/api';
 
 
 
@@ -46,7 +47,7 @@ function AddProduct() {
         toast.error("Only 5 images upload")
       } else {
         try {
-          const response = await axios.post('https://eko-mart.onrender.com/api/addproduct', formData, {
+          const response = await api.post('/api/addproduct', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
@@ -72,7 +73,7 @@ function AddProduct() {
   useEffect(() => {
     const fetchedCategory = async () => {
       try {
-        const response = await axios.get('https://eko-mart.onrender.com/api/allcategory')
+        const response = await api.get('/api/allcategory')
         setFetchedCategories(response.data.categories)
         // console.log(response.data.categories)
       } catch (error) {

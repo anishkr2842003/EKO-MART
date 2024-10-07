@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
+import api from '../../utils/api';
 
 function AddCategory() {
 
@@ -25,7 +26,7 @@ function AddCategory() {
       toast.error("All fileds are required")
     } else {
       try {
-        const response = await axios.post('https://eko-mart.onrender.com/api/addcategory', formData, {
+        const response = await api.post('/api/addcategory', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         // console.log(response.data.message)
