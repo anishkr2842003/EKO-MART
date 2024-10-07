@@ -55,7 +55,7 @@ const AllProducts = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/allproducts')
+        const response = await axios.get('https://eko-mart.onrender.com/api/allproducts')
         setProducts(response.data.products)
         setLoading(false)
         // console.log(response)

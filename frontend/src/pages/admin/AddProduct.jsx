@@ -72,7 +72,7 @@ function AddProduct() {
   useEffect(() => {
     const fetchedCategory = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/allcategory')
+        const response = await axios.get('https://eko-mart.onrender.com/api/allcategory')
         setFetchedCategories(response.data.categories)
         // console.log(response.data.categories)
       } catch (error) {
