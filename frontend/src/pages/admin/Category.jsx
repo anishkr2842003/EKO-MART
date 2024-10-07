@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const ProductTable = styled.table`
@@ -46,41 +47,61 @@ const ProductTable = styled.table`
   }
 `;
 
-const products = [
-  { id: 1, name: 'Product 1', price: 100, category: 'Category A' },
-  { id: 2, name: 'Product 2', price: 150, category: 'Category B' },
-  { id: 3, name: 'Product 3', price: 200, category: 'Category A' },
-  // Add more products as needed
-];
-
 const Category = () => {
+
+  const [categories,setCategories] = useState([]);
+  const [loading,setLoading] = useState(true);
+
+  useEffect(()=>{
+    const fetchCategories = async()=>{
+      try {
+        const response = await axios.get('http://localhost:8000/api/allcategory');
+          setCategories(response.data.categories);
+        setLoading(false)
+        // console.log(response)
+      } catch (error) {
+        setLoading(false)
+        console.log(`Error in fetching category data`)
+      }
+    }
+    fetchCategories()
+  },[])
+
+  if(loading){
+    return (
+      <div><h2>Loading...</h2></div>
+    )
+  }
+
   return (
     <div>
-      <h5>Product List</h5>
+      <h5>Product Category ({categories.length})</h5>
       <ProductTable>
         <thead>
           <tr>
             <th>Sl. No</th>
             <th>Category Name</th>
-            <th>Starting Price</th>
+            {/* <th>Starting Price</th> */}
             <th>Total Stock</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
-            <tr key={product.id}>
+          {
+          categories.length > 0 ? categories.map((category, index) => (
+            <tr key={index}>
               <td>{index + 1}</td>
-              <td>{product.name}</td>
-              <td>${product.price}</td>
-              <td>{product.category}</td>
+              <td>{category.catname}</td>
+              {/* <td>${category.price}</td> */}
+              <td>{category.stocks}</td>
               <td>
                 {/* <button className="see-btn">See</button> */}
                 <button className="edit-btn">Edit</button>
                 <button className="delete-btn">Delete</button>
               </td>
             </tr>
-          ))}
+          )) : <tr><td colSpan={4}><h4>No category found</h4></td></tr>
+          }
         </tbody>
       </ProductTable>
     </div>

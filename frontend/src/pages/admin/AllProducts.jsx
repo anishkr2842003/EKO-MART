@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const ProductTable = styled.table`
@@ -46,17 +47,35 @@ const ProductTable = styled.table`
   }
 `;
 
-const products = [
-  { id: 1, name: 'Product 1', price: 100, category: 'Category A' },
-  { id: 2, name: 'Product 2', price: 150, category: 'Category B' },
-  { id: 3, name: 'Product 3', price: 200, category: 'Category A' },
-  // Add more products as needed
-];
-
 const AllProducts = () => {
+
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/allproducts')
+        setProducts(response.data.products)
+        setLoading(false)
+        // console.log(response)
+      } catch (error) {
+        setLoading(false)
+        console.log(error)
+      }
+    }
+    fetchProduct()
+  }, []);
+
+  if (loading) {
+    return (
+      <h1>Loading...</h1>
+    )
+  }
   return (
+
     <div>
-      <h5>Product List</h5>
+      <h5>Product List ({products.length})</h5>
       <ProductTable>
         <thead>
           <tr>
@@ -68,11 +87,12 @@ const AllProducts = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
-            <tr key={product.id}>
+          {
+          products.length > 0 ? products.map((product, index) => (
+            <tr key={index}>
               <td>{index + 1}</td>
-              <td>{product.name}</td>
-              <td>${product.price}</td>
+              <td>{product.title}</td>
+              <td> ₹{product.sellingprice}  <del>{product.originalprice}</del></td>
               <td>{product.category}</td>
               <td>
                 {/* <button className="see-btn">See</button> */}
@@ -80,11 +100,13 @@ const AllProducts = () => {
                 <button className="delete-btn">Delete</button>
               </td>
             </tr>
-          ))}
+          )) : <tr><td><h4>No product found</h4></td></tr>
+          }
         </tbody>
       </ProductTable>
     </div>
   );
+
 };
 
 export default AllProducts;

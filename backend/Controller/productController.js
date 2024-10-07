@@ -1,6 +1,6 @@
 import productModel from "../Models/productModel.js";
 
-const addProduct = async(req,res)=>{
+export const addProduct = async(req,res)=>{
     try {
         const {title,description,originalprice,sellingprice,category,brandname,weight} = req.body
         const images = req.files.map(file => file.filename);
@@ -13,4 +13,14 @@ const addProduct = async(req,res)=>{
     }
 }
 
-export default addProduct;
+export const allProducts = async(req,res)=>{
+    try {
+        const allproducts = await productModel.find();
+        res.status(200).json({message: "All product fetched", products: allproducts})
+        // console.log(allproducts)
+    } catch (error) {
+        res.status(500).json({message: "Products fetching problem"})
+    }
+}
+
+// export default {addProduct, allProducts};

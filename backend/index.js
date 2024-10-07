@@ -4,6 +4,7 @@ import 'dotenv/config'
 import DBConn from './utils/DBCon.js'
 
 import productRoute from './Routes/productRoute.js'
+import categoryRoute from './Routes/categoryRoute.js'
 
 const app = express()
 app.use(cors());
@@ -15,6 +16,7 @@ app.get('/', (req,res)=>{
 })
 
 app.use("/api", productRoute)
+app.use("/api", categoryRoute)
 
 
 // Database connection

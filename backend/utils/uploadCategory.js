@@ -3,7 +3,7 @@ import path from 'path';
 
 // Set storage engine
 const storage = multer.diskStorage({
-    destination: './uploads/products',  // Directory to save the files
+    destination: './uploads/category',  // Directory to save the files
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);
     }
