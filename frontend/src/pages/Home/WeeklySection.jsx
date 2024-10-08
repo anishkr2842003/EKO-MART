@@ -108,8 +108,8 @@ function WeeklySection() {
                   <div className="row g-4">
                     {
                       products.map((product, index) => (
-                        <div className="col-xxl-2 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12">
-                          <FeaturedCard key={index} product={product} />
+                        <div className="col-xxl-2 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12" key={index}>
+                          <FeaturedCard product={product} />
                         </div>
                       ))
                     }
