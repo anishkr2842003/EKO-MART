@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react"; // Import Swiper and SwiperSlide
 import { Navigation, Pagination } from "swiper/modules";
-import CatCard from "../../components/CatCard";
+// import CatCard from "../../components/CatCard";
 import FeaturedCard from "../../components/FeaturedCard";
+import api from "../../utils/api";
 // Import necessary Swiper modules
 
 // Import Swiper styles
@@ -54,6 +55,24 @@ const SwiperButtonPrev = styled.div`
 `;
 
 function FeaturedSection() {
+
+  const [featuredProducts,setFeaturedProducts] = useState([])
+
+  useEffect(()=>{
+    const fetchedProduct = async()=>{
+      try {
+        const response = await api.get('/api/allproducts');
+
+        const filterData = response.data.products.filter((product)=> product.type == "featuredGrocery")
+        setFeaturedProducts(filterData)
+        // console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchedProduct()
+  }, [])
+
   return (
     <>
       <div className="rts-grocery-feature-area rts-section-gapBottom">
@@ -109,43 +128,14 @@ function FeaturedSection() {
                       },
                     }}
                   >
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
+                    
+                    {
+                      featuredProducts.map((product,index)=>(
+                        <StyledSwiperSlide key={index}>
+                      <FeaturedCard product={product}/>
                     </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-                    <StyledSwiperSlide>
-                      <FeaturedCard />
-                    </StyledSwiperSlide>
-
+                      ))
+                    }
                     {/* Next and Prev buttons */}
                     {/* <SwiperButtonNext className="swiper-button-next" />
           <SwiperButtonPrev className="swiper-button-prev" /> */}

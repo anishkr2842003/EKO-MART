@@ -44,8 +44,9 @@ function App() {
         <Route path='logout' element={<Logout/>}/>
       </Route>
 
-      <Route path='/singleProduct' element={<SingleProduct/>}/>
-      <Route path='/products' element={<Products/>}/>
+      <Route path='/singleProduct/:id' element={<SingleProduct/>}/>
+      <Route path={'/products'} element={<Products/>}/>
+      <Route path={'/products/:catname'} element={<Products/>}/>
       <Route path='/signup' element={<Signup/>}/>
       <Route path='/login' element={<Login/>}/>
 

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from 'swiper/react'; // Import Swiper and SwiperSlide
 import { Navigation, Pagination } from 'swiper/modules';
+import { Link } from "react-router-dom";
 // Import necessary Swiper modules
 
 // Import Swiper styles
@@ -64,29 +65,29 @@ function Banner() {
           }}
         >
           <StyledSwiperSlide><div className="swiper-slide">
-                      <div className="banner-bg-image bg_image bg_one-banner ptb--120 ptb_md--80 ptb_sm--60">
-                        <div className="banner-one-inner-content">
-                          <span className="pre">Get up to 30% off on your first $150 purchase</span>
-                          <h1 className="title">Do not miss our amazing <br /> grocery deals</h1>
-                          <a href="shop-grid-sidebar.html" className="rts-btn btn-primary radious-sm with-icon">
-                            <div className="btn-text">Shop Now</div>
-                            <div className="arrow-icon"><i className="fa-light fa-arrow-right" /></div>
-                          </a>
-                        </div>
-                      </div>
-                    </div></StyledSwiperSlide>
+            <div className="banner-bg-image bg_image bg_one-banner ptb--120 ptb_md--80 ptb_sm--60">
+              <div className="banner-one-inner-content">
+                <span className="pre">Get up to 30% off on your first $150 purchase</span>
+                <h1 className="title">Do not miss our amazing <br /> grocery deals</h1>
+                <Link to={'/products'} className="rts-btn btn-primary radious-sm with-icon">
+                  <div className="btn-text">Shop Now</div>
+                  <div className="arrow-icon"><i className="fa-light fa-arrow-right" /></div>
+                </Link>
+              </div>
+            </div>
+          </div></StyledSwiperSlide>
           <StyledSwiperSlide><div className="swiper-slide">
-                      <div className="banner-bg-image bg_image bg_one-banner ptb--120 ptb_md--80 ptb_sm--60">
-                        <div className="banner-one-inner-content">
-                          <span className="pre">Get up to 30% off on your first $150 purchase</span>
-                          <h1 className="title">Amazing grocery deals just for you</h1>
-                          <a href="shop-grid-sidebar.html" className="rts-btn btn-primary radious-sm with-icon">
-                            <div className="btn-text">Shop Now</div>
-                            <div className="arrow-icon"><i className="fa-light fa-arrow-right" /></div>
-                          </a>
-                        </div>
-                      </div>
-                    </div></StyledSwiperSlide>
+            <div className="banner-bg-image bg_image bg_one-banner ptb--120 ptb_md--80 ptb_sm--60">
+              <div className="banner-one-inner-content">
+                <span className="pre">Get up to 30% off on your first $150 purchase</span>
+                <h1 className="title">Amazing grocery deals just for you</h1>
+                <Link to={'/products'} className="rts-btn btn-primary radious-sm with-icon">
+                  <div className="btn-text">Shop Now</div>
+                  <div className="arrow-icon"><i className="fa-light fa-arrow-right" /></div>
+                </Link>
+              </div>
+            </div>
+          </div></StyledSwiperSlide>
 
           {/* Next and Prev buttons */}
           {/* <SwiperButtonNext className="swiper-button-next" />

@@ -1,9 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import ProductCard from "./ProductCard";
+import api from "../../utils/api";
+import { Link, useParams } from "react-router-dom";
 
 function Products() {
+
+  const { catname } = useParams();
+
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [category, setCategory] = useState([])
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get('/api/allproducts')
+        const response2 = await api.get('/api/allcategory')
+        setProducts(response.data.products)
+        setCategory(response2.data.categories)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchProducts()
+  }, [])
+
+  useEffect(() => {
+    if (catname) {
+      const filterData = products.filter((product) => product.category == catname)
+      setFilteredProducts(filterData)
+    } else {
+      setFilteredProducts(products)
+    }
+  }, [catname, products])
+
   return (
     <>
       <Header />
@@ -15,10 +49,10 @@ function Products() {
             <div className="row">
               <div className="col-lg-12">
                 <div className="navigator-breadcrumb-wrapper">
-                  <a href="index.html">Home</a>
+                  <Link to={'/'}>Home</Link>
                   <i className="fa-regular fa-chevron-right" />
-                  <a className="current" href="index.html">
-                    Shop Grid Sidebar
+                  <a className="current" >
+                    {catname == undefined ? "All products" : catname}
                   </a>
                 </div>
               </div>
@@ -65,60 +99,14 @@ function Products() {
                     <h5 className="title">Product Categories</h5>
                     <div className="filterbox-body">
                       <div className="category-wrapper ">
-                        {/* single category */}
-                        <div className="single-category">
-                          <input id="cat1" type="checkbox" />
-                          <label htmlFor="cat1">Beverages</label>
-                        </div>
-                        {/* single category end */}
-                        {/* single category */}
-                        <div className="single-category">
-                          <input id="cat2" type="checkbox" />
-                          <label htmlFor="cat2">Biscuits &amp; Snacks</label>
-                        </div>
-                        {/* single category end */}
-                        {/* single category */}
-                        <div className="single-category">
-                          <input id="cat3" type="checkbox" />
-                          <label htmlFor="cat3">Breads &amp; Bakery</label>
-                        </div>
-                        {/* single category end */}
-                        {/* single category */}
-                        <div className="single-category">
-                          <input id="cat4" type="checkbox" />
-                          <label htmlFor="cat4">Breakfast &amp; Dairy</label>
-                        </div>
-                        {/* single category end */}
-                        {/* single category */}
-                        <div className="single-category">
-                          <input id="cat7" type="checkbox" />
-                          <label htmlFor="cat7">Grocery &amp; Staples</label>
-                        </div>
-                        {/* single category end */}
-                        {/* single category */}
-                        <div className="single-category">
-                          <input id="cat6" type="checkbox" />
-                          <label htmlFor="cat6">Fruits &amp; Vegetables</label>
-                        </div>
-                        {/* single category end */}
-                        {/* single category */}
-                        <div className="single-category">
-                          <input id="cat8" type="checkbox" />
-                          <label htmlFor="cat8">Household Needs</label>
-                        </div>
-                        {/* single category end */}
-                        {/* single category */}
-                        <div className="single-category">
-                          <input id="cat10" type="checkbox" />
-                          <label htmlFor="cat10">Meats &amp; Seafood</label>
-                        </div>
-                        {/* single category end */}
-                        {/* single category */}
-                        <div className="single-category">
-                          <input id="cat80" type="checkbox" />
-                          <label htmlFor="cat80">Grocery &amp; Staples</label>
-                        </div>
-                        {/* single category end */}
+                        {
+                          category.map((cat, index) => (
+                            <div className="single-category" key={index}>
+                              <input id="cat1" type="checkbox" />
+                              <label htmlFor="cat1">{cat?.catname}</label>
+                            </div>
+                          ))
+                        }
                       </div>
                     </div>
                   </div>
@@ -183,7 +171,7 @@ function Products() {
               <div className="col-xl-9 col-lg-12">
                 <div className="filter-select-area">
                   <div className="top-filter">
-                    <span>Showing 1–20 of 57 results</span>
+                    <span>Showing 1–20 of {filteredProducts.length} results</span>
                     <div className="right-end">
                       <span>Sort: Short By Latest</span>
                       <div className="button-tab-area">
@@ -353,13 +341,11 @@ function Products() {
                 </div>
                 <div className="tab-content" id="myTabContent">
                   <div className="row g-4 mt-4">
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
+                    {
+                      filteredProducts.map((product, index) => (
+                        <ProductCard key={index} product={product} />
+                      ))
+                    }
                   </div>
                 </div>
               </div>

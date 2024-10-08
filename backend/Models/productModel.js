@@ -22,6 +22,10 @@ const ProductSchema = new Schema({
         type: Number,
         required: true
     },
+    discount:{
+        type: Number,
+        required: true
+    },
     category:{
         type: String,
         required: true
@@ -33,7 +37,13 @@ const ProductSchema = new Schema({
     weight:{
         type: String,
         required: true
+    },
+    type:{
+        type: String,
+        required: true
     }
+},{
+    timestamps: true
 })
 
 const productModel = mongoose.model('Product', ProductSchema)
