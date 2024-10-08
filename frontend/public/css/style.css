@@ -27472,7 +27472,7 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
 
 .product-details-popup .product-thumb-area {
   margin-right: 40px !important;
-  cursor: url(../images/banner/shape/zoom.png), auto;
+  /* cursor: url(../images/banner/shape/zoom.png), auto; */
 }
 
 .product-details-popup .product-thumb {

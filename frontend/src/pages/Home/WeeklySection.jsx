@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CatCard from "../../components/CatCard";
 import FeaturedCard from "../../components/FeaturedCard";
+import api from "../../utils/api";
 
 function WeeklySection() {
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get('/api/allproducts')
+        // console.log(response)
+        const filterData = response.data.products.filter((product) => product.type == "weeklyBestSellingGroceries")
+        setProducts(filterData)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchProducts()
+  }, [])
+
   return (
     <>
       {/* best selling groceris */}
@@ -12,7 +30,7 @@ function WeeklySection() {
             <div className="col-lg-12">
               <div className="title-area-between">
                 <h2 className="title-left">Weekly Best Selling Groceries</h2>
-                <ul
+                {/* <ul
                   className="nav nav-tabs best-selling-grocery"
                   id="myTab"
                   role="tablist"
@@ -73,7 +91,7 @@ function WeeklySection() {
                       Vitamin Items
                     </button>
                   </li>
-                </ul>
+                </ul> */}
               </div>
             </div>
           </div>
@@ -88,10 +106,13 @@ function WeeklySection() {
                   aria-labelledby="home-tab"
                 >
                   <div className="row g-4">
-
-                    <div className="col-xxl-2 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12">
-                    <FeaturedCard/>
-                    </div>
+                    {
+                      products.map((product, index) => (
+                        <div className="col-xxl-2 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12">
+                          <FeaturedCard key={index} product={product} />
+                        </div>
+                      ))
+                    }
                   </div>
                 </div>
               </div>

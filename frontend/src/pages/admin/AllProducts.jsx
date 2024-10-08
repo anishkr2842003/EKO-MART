@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import api from '../../utils/api';
+import { toast, ToastContainer } from 'react-toastify';
 
 const ProductTable = styled.table`
   width: 100%;
@@ -67,6 +68,18 @@ const AllProducts = () => {
     fetchProduct()
   }, []);
 
+  const handleDeleteProduct = async(id)=>{
+    console.log(id)
+    try {
+      const response = await api.get(`/api/productdelete/${id}`)
+      console.log(response)
+      toast.success(response.data.message)
+      setProducts(products.filter((product)=> product._id != id))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   if (loading) {
     return (
       <h1>Loading...</h1>
@@ -97,13 +110,14 @@ const AllProducts = () => {
               <td>
                 {/* <button className="see-btn">See</button> */}
                 <button className="edit-btn">Edit</button>
-                <button className="delete-btn">Delete</button>
+                <button className="delete-btn" onClick={()=>handleDeleteProduct(product?._id)}>Delete</button>
               </td>
             </tr>
           )) : <tr><td colSpan={5}><h4>No product found</h4></td></tr>
           }
         </tbody>
       </ProductTable>
+      <ToastContainer/>
     </div>
   );
 

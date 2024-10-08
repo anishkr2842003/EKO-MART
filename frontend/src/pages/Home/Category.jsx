@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react"; // Import Swiper and SwiperSlide
 import { Navigation, Pagination } from "swiper/modules";
 import CatCard from "../../components/CatCard";
+import api from "../../utils/api"
 // Import necessary Swiper modules
 
 // Import Swiper styles
@@ -53,6 +54,22 @@ const SwiperButtonPrev = styled.div`
 `;
 
 function Category() {
+
+  const [categories,setCategories] = useState([])
+
+  useEffect(()=>{
+    const fetchCategory = async()=>{
+      try {
+        const response = await api.get('/api/allcategory')
+        setCategories(response.data.categories)
+        // console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchCategory()
+  },[])
+
   return (
     <>
       <StyledSwiper>
@@ -83,43 +100,13 @@ function Category() {
             },
           }}
         >
-          <StyledSwiperSlide>
-            <CatCard />
+          {
+            categories.map((category,index)=>(
+              <StyledSwiperSlide key={index}>
+            <CatCard category={category}/>
           </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-          <StyledSwiperSlide>
-            <CatCard />
-          </StyledSwiperSlide>
-
+            ))
+          }
           {/* Next and Prev buttons */}
           {/* <SwiperButtonNext className="swiper-button-next" />
           <SwiperButtonPrev className="swiper-button-prev" /> */}

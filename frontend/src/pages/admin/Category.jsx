@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import api from '../../utils/api';
+import { toast, ToastContainer } from 'react-toastify';
 
 const ProductTable = styled.table`
   width: 100%;
@@ -68,6 +68,16 @@ const Category = () => {
     fetchCategories()
   },[])
 
+  const handleDeleteCategory = async(id)=>{
+    try {
+      const response = await api.get(`http://localhost:8000/api/categorydelete/${id}`)
+      toast.success(response.data.message)
+      setCategories(categories.filter((category)=> category._id != id))
+    } catch (error) {
+      console.log('Deleting category')
+    }
+  }
+
   if(loading){
     return (
       <div><h2>Loading...</h2></div>
@@ -98,13 +108,14 @@ const Category = () => {
               <td>
                 {/* <button className="see-btn">See</button> */}
                 <button className="edit-btn">Edit</button>
-                <button className="delete-btn">Delete</button>
+                <button className="delete-btn" onClick={()=> handleDeleteCategory(category._id)}>Delete</button>
               </td>
             </tr>
           )) : <tr><td colSpan={4}><h4>No category found</h4></td></tr>
           }
         </tbody>
       </ProductTable>
+      <ToastContainer/>
     </div>
   );
 };

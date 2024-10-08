@@ -1,14 +1,20 @@
 import React from "react";
+import api from "../utils/api"
+import { Link } from "react-router-dom";
 
-function CatCard() {
+function CatCard({category}) {
+
+  const{image,catname} = category
+  // console.log(image,catname)
+
   return (
     <>
       {/* single swiper start */}
       <div className="swiper-slide">
-        <a href="shop-grid-sidebar.html" className="single-category-one">
-          <img src="/images/category/02.png" alt="category" />
-          <p>Organic Vegetable</p>
-        </a>
+        <Link to={`/products/${category?.catname}`} className="single-category-one">
+          <img src={`${api.defaults.baseURL}uploads/category/${image}`} alt="category" />
+          <p>{catname}</p>
+        </Link>
       </div>
       {/* single swiper end */}
     </>

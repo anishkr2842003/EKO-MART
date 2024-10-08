@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import api from "../../utils/api";
+import { Link } from "react-router-dom";
 
 function TopTrendingSection() {
+
+  const [fetchedProducts,setFetchedProducts] = useState([])
+
+  useEffect(()=>{
+    const fetchProducts = async()=>{
+      try {
+        const response = await api.get('/api/allproducts')
+        const filterData = response.data.products.filter((product)=> product.type == "topTrendingProducts")
+        setFetchedProducts(filterData.slice(0,8))
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchProducts()
+  },[])
+
   return (
     <>
       {/* rts top tranding product area */}
@@ -17,198 +35,36 @@ function TopTrendingSection() {
             <div className="col-lg-12">
               <div className="cover-card-main-over">
                 <div className="row g-4">
-                  <div className="col-xl-3 col-md-6 col-sm-12 col-12">
+                  {
+                    fetchedProducts.map((product,index)=>(
+                      <div className="col-xl-3 col-md-6 col-sm-12 col-12" key={index}>
                     <div className="single-shopping-card-one tranding-product">
-                      <a href="shop-details.html" className="thumbnail-preview">
+                      <Link to={`/singleproduct/${product?._id}`} className="thumbnail-preview">
                         <div className="badge">
                           <span>
-                            25% <br />
+                            {product?.discount}% <br />
                             Off
                           </span>
                           <i className="fa-solid fa-bookmark" />
                         </div>
-                        <img src="/images/grocery/07.jpg" alt="grocery" />
-                      </a>
+                        <img src={`${api.defaults.baseURL}uploads/products/${product?.images[0]}`} alt="grocery" />
+                      </Link>
                       <div className="body-content">
-                        <a href="shop-details.html">
-                          <h4 className="title">Pastine Mellin Filid</h4>
-                        </a>
-                        <span className="availability">500g Pack</span>
+                        <Link to={`/singleproduct/${product?._id}`}>
+                          <h4 className="title">{product?.title}</h4>
+                        </Link>
+                        <span className="availability">{product?.weight} Pack</span>
                         <div className="price-area">
-                          <span className="current">$36.00</span>
-                          <div className="previous">$36.00</div>
+                          <span className="current">₹{Math.ceil(product?.sellingprice)}</span>
+                          <div className="previous">₹{product?.originalprice}</div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="col-xl-3 col-md-6 col-sm-12 col-12">
-                    <div className="single-shopping-card-one tranding-product">
-                      <a href="shop-details.html" className="thumbnail-preview">
-                        <div className="badge">
-                          <span>
-                            25% <br />
-                            Off
-                          </span>
-                          <i className="fa-solid fa-bookmark" />
-                        </div>
-                        <img src="/images/grocery/08.jpg" alt="grocery" />
-                      </a>
-                      <div className="body-content">
-                        <a href="shop-details.html">
-                          <h4 className="title">Di Grano Tenero</h4>
-                        </a>
-                        <span className="availability">500g Pack</span>
-                        <div className="price-area">
-                          <span className="current">$36.00</span>
-                          <div className="previous">$36.00</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xl-3 col-md-6 col-sm-12 col-12">
-                    <div className="single-shopping-card-one tranding-product">
-                      <a href="shop-details.html" className="thumbnail-preview">
-                        <div className="badge">
-                          <span>
-                            25% <br />
-                            Off
-                          </span>
-                          <i className="fa-solid fa-bookmark" />
-                        </div>
-                        <img src="/images/grocery/09.jpg" alt="grocery" />
-                      </a>
-                      <div className="body-content">
-                        <a href="shop-details.html">
-                          <h4 className="title">Mellin Grano Tenero</h4>
-                        </a>
-                        <span className="availability">500g Pack</span>
-                        <div className="price-area">
-                          <span className="current">$36.00</span>
-                          <div className="previous">$36.00</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xl-3 col-md-6 col-sm-12 col-12">
-                    <div className="single-shopping-card-one tranding-product">
-                      <a href="shop-details.html" className="thumbnail-preview">
-                        <div className="badge">
-                          <span>
-                            25% <br />
-                            Off
-                          </span>
-                          <i className="fa-solid fa-bookmark" />
-                        </div>
-                        <img src="/images/grocery/10.jpg" alt="grocery" />
-                      </a>
-                      <div className="body-content">
-                        <a href="shop-details.html">
-                          <h4 className="title">Grano Tenero</h4>
-                        </a>
-                        <span className="availability">500g Pack</span>
-                        <div className="price-area">
-                          <span className="current">$36.00</span>
-                          <div className="previous">$36.00</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xl-3 col-md-6 col-sm-12 col-12">
-                    <div className="single-shopping-card-one tranding-product">
-                      <a href="shop-details.html" className="thumbnail-preview">
-                        <div className="badge">
-                          <span>
-                            25% <br />
-                            Off
-                          </span>
-                          <i className="fa-solid fa-bookmark" />
-                        </div>
-                        <img src="/images/grocery/11.jpg" alt="grocery" />
-                      </a>
-                      <div className="body-content">
-                        <a href="shop-details.html">
-                          <h4 className="title">Jack Froot</h4>
-                        </a>
-                        <span className="availability">500g Pack</span>
-                        <div className="price-area">
-                          <span className="current">$36.00</span>
-                          <div className="previous">$36.00</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xl-3 col-md-6 col-sm-12 col-12">
-                    <div className="single-shopping-card-one tranding-product">
-                      <a href="shop-details.html" className="thumbnail-preview">
-                        <div className="badge">
-                          <span>
-                            25% <br />
-                            Off
-                          </span>
-                          <i className="fa-solid fa-bookmark" />
-                        </div>
-                        <img src="/images/grocery/12.jpg" alt="grocery" />
-                      </a>
-                      <div className="body-content">
-                        <a href="shop-details.html">
-                          <h4 className="title">Fresh Mango</h4>
-                        </a>
-                        <span className="availability">500g Pack</span>
-                        <div className="price-area">
-                          <span className="current">$36.00</span>
-                          <div className="previous">$36.00</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xl-3 col-md-6 col-sm-12 col-12">
-                    <div className="single-shopping-card-one tranding-product">
-                      <a href="shop-details.html" className="thumbnail-preview">
-                        <div className="badge">
-                          <span>
-                            25% <br />
-                            Off
-                          </span>
-                          <i className="fa-solid fa-bookmark" />
-                        </div>
-                        <img src="/images/grocery/13.jpg" alt="grocery" />
-                      </a>
-                      <div className="body-content">
-                        <a href="shop-details.html">
-                          <h4 className="title">Fresh Juice</h4>
-                        </a>
-                        <span className="availability">500g Pack</span>
-                        <div className="price-area">
-                          <span className="current">$36.00</span>
-                          <div className="previous">$36.00</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xl-3 col-md-6 col-sm-12 col-12">
-                    <div className="single-shopping-card-one tranding-product">
-                      <a href="shop-details.html" className="thumbnail-preview">
-                        <div className="badge">
-                          <span>
-                            25% <br />
-                            Off
-                          </span>
-                          <i className="fa-solid fa-bookmark" />
-                        </div>
-                        <img src="/images/grocery/14.jpg" alt="grocery" />
-                      </a>
-                      <div className="body-content">
-                        <a href="shop-details.html">
-                          <h4 className="title">Pastine Mellin</h4>
-                        </a>
-                        <span className="availability">500g Pack</span>
-                        <div className="price-area">
-                          <span className="current">$36.00</span>
-                          <div className="previous">$36.00</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    ))
+                  }
+                  
+
                 </div>
               </div>
             </div>

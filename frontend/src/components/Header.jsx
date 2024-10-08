@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../utils/api";
 
 function Header() {
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchedCategory = async () => {
+      try {
+        const response = await api.get('/api/allcategory')
+        setCategories(response.data.categories)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchedCategory()
+  }, [])
+
   return (
     <>
       <div className="rts-header-one-area-one">
@@ -29,32 +45,18 @@ function Header() {
                         className="category-sub-menu"
                         id="category-active-four"
                       >
-                        <li>
-                          <a href="#" className="menu-item">
-                            <img src="/images/icons/01.svg" alt="icons" />
-                            <span>Breakfast &amp; Dairy</span>
-                            <i className="fa-regular fa-plus" />
-                          </a>
-                          <ul className="submenu mm-collapse">
-                            <li>
-                              <a className="mobile-menu-link" href="#">
-                                Breakfast
-                              </a>
+                        {
+                          categories.map((category, index) => (
+                            <li key={index}>
+                              <Link to={`/products/${category?.catname}`} className="menu-item">
+                                {/* <img src={`${api.defaults.baseURL}uploads/category/${category?.image}`} alt="icons" /> */}
+                                <span>{category.catname}</span>
+                                {/* <i className="fa-regular fa-plus" /> */}
+                              </Link>
                             </li>
-                            <li>
-                              <a className="mobile-menu-link" href="#">
-                                Dinner
-                              </a>
-                            </li>
-                            <li>
-                              <a className="mobile-menu-link" href="#">
-                                {" "}
-                                Pumking
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
+                          ))
+                        }
+                        {/* <li>
                           <a href="#" className="menu-item">
                             <img src="/images/icons/02.svg" alt="icons" />
                             <span>Meats &amp; Seafood</span>
@@ -164,7 +166,7 @@ function Header() {
                             <img src="/images/icons/10.svg" alt="icons" />
                             <span>Other Items</span>
                           </a>
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                     <form action="#" className="search-header">

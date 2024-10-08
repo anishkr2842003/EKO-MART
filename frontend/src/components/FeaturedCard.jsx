@@ -1,23 +1,29 @@
 import React from "react";
+import api from "../utils/api";
+import { Link } from "react-router-dom";
 
-function FeaturedCard() {
+function FeaturedCard({product}) {
+// console.log(product)
+// if(product){
+//   const {_id,brandname,category,description,originalprice,sellingprice,title,weight,images} = product
+//   // console.log(_id)
+// }
+
   return (
     <>
-      {/* single swiper start */}
       <div className="swiper-slide">
         <div className="single-shopping-card-one">
-          {/* iamge and sction area start */}
           <div className="image-and-action-area-wrapper">
-            <a href="shop-details.html" className="thumbnail-preview">
+            <Link to={`/singleproduct/${product?._id}`} className="thumbnail-preview">
               <div className="badge">
                 <span>
-                  25% <br />
+                  {product?.discount}% <br />
                   Off
                 </span>
                 <i className="fa-solid fa-bookmark" />
               </div>
-              <img src="/images/grocery/01.jpg" alt="grocery" />
-            </a>
+              <img src={`${api.defaults.baseURL}uploads/products/${product?.images[0]}`} alt="grocery" />
+            </Link>
             <div className="action-share-option">
               <div
                 className="single-action openuptip message-show-action"
@@ -44,17 +50,16 @@ function FeaturedCard() {
               </div>
             </div>
           </div>
-          {/* iamge and sction area start */}
           <div className="body-content">
             <a href="shop-details.html">
               <h4 className="title">
-                Nestle Cerelac Mixed Fruits &amp; Wheat with Milk
+                {product?.title}
               </h4>
             </a>
-            <span className="availability">500g Pack</span>
+            <span className="availability">{product?.weight} Pack</span>
             <div className="price-area">
-              <span className="current">$36.00</span>
-              <div className="previous">$36.00</div>
+              <span className="current">₹{Math.ceil(product?.sellingprice)}</span>
+              <div className="previous">₹{product?.originalprice}</div>
             </div>
             <div className="cart-counter-action">
               <div className="quantity-edit">
@@ -81,7 +86,6 @@ function FeaturedCard() {
           </div>
         </div>
       </div>
-      {/* single swiper start */}
     </>
   );
 }

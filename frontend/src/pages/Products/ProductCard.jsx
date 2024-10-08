@@ -1,22 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import api from "../../utils/api";
 
-function ProductCard() {
+function ProductCard({product}) {
   return (
     <>
       <div className="col-lg-20 col-lg-4 col-md-6 col-sm-6 col-12">
         <div className="single-shopping-card-one">
           {/* iamge and sction area start */}
           <div className="image-and-action-area-wrapper">
-            <a href="shop-details.html" className="thumbnail-preview">
+            <Link to={`/singleproduct/${product?._id}`} className="thumbnail-preview">
               <div className="badge">
                 <span>
-                  25% <br />
+                  {product?.discount}% <br />
                   Off
                 </span>
                 <i className="fa-solid fa-bookmark" />
               </div>
-              <img src="/images/grocery/01.jpg" alt="grocery" />
-            </a>
+              <img src={`${api.defaults.baseURL}uploads/products/${product?.images?.[0]}`} alt="grocery" />
+            </Link>
             <div className="action-share-option">
               <div
                 className="single-action openuptip message-show-action"
@@ -45,15 +47,15 @@ function ProductCard() {
           </div>
           {/* iamge and sction area start */}
           <div className="body-content">
-            <a href="shop-details.html">
+            <Link to={`/singleproduct/${product?._id}`}>
               <h4 className="title">
-                Best Cerelac Mixed Fruits &amp; Wheat with Milk
+                {product?.title}
               </h4>
-            </a>
-            <span className="availability">500g Pack</span>
+            </Link>
+            <span className="availability">{product?.weight} Pack</span>
             <div className="price-area">
-              <span className="current">$36.00</span>
-              <div className="previous">$36.00</div>
+              <span className="current">₹{Math.ceil(product?.sellingprice)}</span>
+              <div className="previous">₹{product?.originalprice}</div>
             </div>
             <div className="cart-counter-action">
               <div className="quantity-edit">

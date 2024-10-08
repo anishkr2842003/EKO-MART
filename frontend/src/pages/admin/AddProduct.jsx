@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import api from '../../utils/api';
@@ -15,7 +14,9 @@ function AddProduct() {
   const [brandName, setBrandName] = useState("")
   const [weight, setWeight] = useState("")
   const [originalprice, setOriginalPrice] = useState("")
-  const [sellingprice, setSellingPrice] = useState("")
+  const [discount, setDiscount] = useState("")
+  const [selectedType, setSelectedType] = useState("")
+  const[sellingPrice,setSellingPrice] = useState("")
 
   const [fetchedCategories, setFetchedCategories] = useState([])
 
@@ -31,16 +32,19 @@ function AddProduct() {
     formData.append('brandname', brandName)
     formData.append('weight', weight)
     formData.append('originalprice', originalprice)
-    formData.append('sellingprice', sellingprice)
+    formData.append('sellingprice', sellingPrice)
+    formData.append('discount', discount)
+    formData.append('type',  selectedType)
+
 
     images.forEach((image) => formData.append("images", image))
 
     // printing from data on console
-    //   for(let [key, value] of formData.entries()) {
-    //   console.log(key, value);
-    // }
+      for(let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
 
-    if (!title || !images || !description || !selectedCategory || selectedCategory == "" || !brandName || !weight || !originalprice || !sellingprice) {
+    if (!title || !images || !description || !selectedCategory || selectedCategory == "" || !brandName || !weight || !originalprice || !discount) {
       toast.error("All fileds are required")
     } else {
       if (images.length > 5) {
@@ -62,6 +66,8 @@ function AddProduct() {
           setWeight("")
           setOriginalPrice("")
           setSellingPrice("")
+          setDiscount("")
+          setSelectedType("")
           fileInputRef.current.value = null
         } catch (error) {
           console.error(`Error in uploading product : ${error}`)
@@ -70,8 +76,16 @@ function AddProduct() {
     }
   }
 
+  useEffect(()=>{
+    if(originalprice==""){
+      setSellingPrice("")
+    }
+    setSellingPrice(originalprice - ((originalprice*discount)/100))
+  },[discount,sellingPrice])
+
   useEffect(() => {
     const fetchedCategory = async () => {
+    
       try {
         const response = await api.get('/api/allcategory')
         setFetchedCategories(response.data.categories)
@@ -133,6 +147,28 @@ function AddProduct() {
 
         </select>
 
+        <select
+          style={{
+            padding: '10px',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            width: '100%',
+            backgroundColor: '#f9f9f9',
+            cursor: 'pointer',
+            fontSize: '16px',
+            marginTop: "10px",
+            marginBottom: "10px"
+          }}
+          onChange={(e)=> setSelectedType(e.target.value)}
+          value={selectedType}
+        >
+          <option disabled value="">Select a Type</option>
+              <option value={"featuredGrocery"}>Featured Grocery</option>           
+              <option value={"productWithDiscount"}>Products With Discounts</option>           
+              <option value={"weeklyBestSellingGroceries"}>Weekly Best Selling Groceries</option>           
+              <option value={"topTrendingProducts"}>Top Trending Products</option>           
+        </select>
+
         <input type="text" placeholder="Product Description" value={description} onChange={(e) => setDescription(e.target.value)} />
         {/* <input type="text" placeholder="Product Category" value={category} onChange={(e) => setCategory(e.target.value)} /> */}
         <div className="input-half-area">
@@ -148,7 +184,10 @@ function AddProduct() {
             <input type="number" placeholder="Orignal Price" value={originalprice} onChange={(e) => setOriginalPrice(e.target.value)} />
           </div>
           <div className="single-input">
-            <input type="number" placeholder="Selling Price" value={sellingprice} onChange={(e) => setSellingPrice(e.target.value)} />
+            <input type="number" placeholder="Discount" value={discount} onChange={(e) => setDiscount(e.target.value)} />
+          </div>
+          <div className="single-input">
+            <input type="number" placeholder="Selling Price" value={sellingPrice == "" ? "" : sellingPrice} readOnly/>
           </div>
         </div>
         <button className="rts-btn btn-primary" type='submit'>Save Change</button>
