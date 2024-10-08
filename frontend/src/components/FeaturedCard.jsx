@@ -51,11 +51,11 @@ function FeaturedCard({product}) {
             </div>
           </div>
           <div className="body-content">
-            <a href="shop-details.html">
+            <Link to={`/singleproduct/${product?._id}`}>
               <h4 className="title">
                 {product?.title}
               </h4>
-            </a>
+            </Link>
             <span className="availability">{product?.weight} Pack</span>
             <div className="price-area">
               <span className="current">₹{Math.ceil(product?.sellingprice)}</span>
