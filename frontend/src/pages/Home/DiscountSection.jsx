@@ -88,7 +88,7 @@ function DiscountSection() {
                               <i className="fa-solid fa-bookmark" />
                             </div>
                             <img
-                              src={`${api.defaults.baseURL}uploads/products/${product?.images[0]}`}
+                              src={category?.image?.url} 
                               alt="grocery"
                             />
                           </Link>
@@ -125,7 +125,7 @@ function DiscountSection() {
                               <i className="fa-solid fa-bookmark" />
                             </div>
                             <img
-                              src={`${api.defaults.baseURL}uploads/products/${product?.images[0]}`}
+                              src={category?.image?.url} 
                               alt="grocery"
                             />
                           </Link>

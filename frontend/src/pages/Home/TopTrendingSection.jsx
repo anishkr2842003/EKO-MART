@@ -47,7 +47,7 @@ function TopTrendingSection() {
                           </span>
                           <i className="fa-solid fa-bookmark" />
                         </div>
-                        <img src={`${api.defaults.baseURL}uploads/products/${product?.images[0]}`} alt="grocery" />
+                        <img src={product?.images[0]?.url} alt="grocery" />
                       </Link>
                       <div className="body-content">
                         <Link to={`/singleproduct/${product?._id}`}>

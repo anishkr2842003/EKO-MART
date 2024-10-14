@@ -23,8 +23,9 @@ function SingleProduct() {
     const fetchSingleProduct = async () => {
       try {
         const response = await api.get(`/api/singleproduct/${id}`)
+        // console.log(response)
         setProduct(response.data.singleProduct)
-        setCurrentImage(`${api.defaults.baseURL}uploads/products/${response.data.singleProduct?.images[0]}`)
+        setCurrentImage(response.data.singleProduct?.images[0].url)
       } catch (error) {
         console.log(error)
       }
@@ -78,17 +79,17 @@ function SingleProduct() {
                             <div className="thumb-wrapper one filterd-items figure">
 
                               <div className="product-thumb">
-                                <img  src={currentImage} alt="product-thumb"/>
+                                <img src={currentImage} alt="product-thumb"/>
                               </div>
                             </div>
                             <div className="product-thumb-filter-group">
                               {
                                 product?.images?.map((image,index)=>(
                                   <div className={`thumb-filter filter-btn ${activeIndex == index && 'active'}`} key={index}
-                                onClick={()=>handleImageChange(`${api.defaults.baseURL}uploads/products/${image}`, index)}
+                                onClick={()=>handleImageChange(image.url, index)}
                               >
                                 <img
-                                  src={`${api.defaults.baseURL}uploads/products/${image}`}
+                                  src={image.url}
                                   alt="product-thumb-filter"
                                 />
                               </div>

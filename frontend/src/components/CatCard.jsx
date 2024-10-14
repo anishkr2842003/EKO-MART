@@ -12,7 +12,7 @@ function CatCard({category}) {
       {/* single swiper start */}
       <div className="swiper-slide">
         <Link to={`/products/${category?.catname}`} className="single-category-one">
-          <img src={`${api.defaults.baseURL}uploads/category/${image}`} alt="category" />
+          <img src={category?.image?.url} alt="category" />
           <p>{catname}</p>
         </Link>
       </div>
