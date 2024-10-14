@@ -9,7 +9,7 @@ function FeaturedCard({product}) {
 //   const {_id,brandname,category,description,originalprice,sellingprice,title,weight,images} = product
 //   // console.log(_id)
 // }
-
+  
   // const user = JSON.parse(localStorage.getItem('user'))
   const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
 

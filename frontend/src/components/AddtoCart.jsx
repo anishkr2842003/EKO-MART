@@ -12,7 +12,7 @@ function AddtoCart({productId,userId}) {
     }
 
     const handleDec = () => {
-        if (qut != 1) {
+        if (quantity != 1) {
             setQuantity((prev) => prev - 1)
         } else {
             setQuantity(1)
