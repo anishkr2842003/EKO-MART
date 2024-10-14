@@ -29,75 +29,6 @@ An advanced e-commerce web application built with the **MERN stack** (MongoDB, E
 - **Database**: MongoDB for secure and efficient data storage.
 - **Image Storage**: Cloudinary for product image management.
 
-## Data Models
-
-### User
-
-| Field      | Type        | Description                           |
-|------------|-------------|---------------------------------------|
-| `_id`      | ObjectId    | Unique identifier for the user        |
-| `username` | String      | User's name                           |
-| `email`    | String      | User's email address                  |
-| `password` | String      | Hashed password (using bcrypt)        |
-| `cart`     | Array       | List of items in the user's cart      |
-| `wishlist` | Array       | List of items in the user's wishlist  |
-| `order`    | Array       | List of user’s past orders            |
-| `createdAt`| Date        | Timestamp when the user was created   |
-| `updatedAt`| Date        | Timestamp when the user was updated   |
-| `address`  | Object      | User’s address information            |
-| `firstname`| String      | User's first name                     |
-| `lastname` | String      | User's last name                      |
-
-### Product
-
-| Field          | Type        | Description                          |
-|----------------|-------------|--------------------------------------|
-| `_id`          | ObjectId    | Unique identifier for the product    |
-| `title`        | String      | Name or title of the product         |
-| `images`       | Array       | Array of product images (3)          |
-| `description`  | String      | Short description of the product     |
-| `originalprice`| Number      | Original price of the product        |
-| `sellingprice` | Number      | Discounted selling price             |
-| `discount`     | Number      | Discount percentage                  |
-| `category`     | String      | Category to which the product belongs|
-| `brandname`    | String      | Brand name of the product            |
-| `weight`       | String      | Weight or size information           |
-| `type`         | String      | Type of product (e.g., discount type)|
-| `createdAt`    | Date        | Timestamp when the product was created |
-| `updatedAt`    | Date        | Timestamp when the product was updated |
-
-### Category
-
-| Field         | Type      | Description                              |
-|---------------|-----------|------------------------------------------|
-| `_id`         | ObjectId  | Unique identifier for the category        |
-| `catname`     | String    | Name of the category (e.g., Fruits)       |
-| `image`       | String    | Image filename associated with the category |
-| `stocks`      | Number    | Number of items in stock for the category |
-| `description` | String    | Description of the category               |
-
-### Cart
-
-| Field      | Type      | Description                                  |
-|------------|-----------|----------------------------------------------|
-| `_id`      | ObjectId  | Unique identifier for the order              |
-| `products` | Array     | Array of products in the order (2 products)  |
-| `user`     | ObjectId  | ID of the user who placed the order          |
-
-### Order
-
-| Field       | Type    | Description               |
-|-------------|---------|---------------------------|
-| userId      | ObjectId| Reference to the user      |
-| products    | Array   | Products in the order      |
-| totalPrice  | Number  | Total order price          |
-| paymentMethod | String | Payment method chosen by the user |
-| shippingAddress | String | User's shipping address  |
-| payment_status       | Boolean | Payment status            |
-| paidAt      | Date    | Date and time of payment   |
-| isDelivered | Boolean | Delivery status           |
-| deliveredAt | Date    | Date and time of delivery  |
-
 ## How It Works
 
 1. **Home Page**: Users can explore products and filter them by categories.
@@ -146,7 +77,7 @@ An advanced e-commerce web application built with the **MERN stack** (MongoDB, E
 ## API Endpoints
 
 ### Base URL
-**URL**: `https://eko-mart.onrender.com/` 
+**URL**: `https://eko-mart.onrender.com` 
 
 ### User APIs
 
@@ -249,9 +180,78 @@ An advanced e-commerce web application built with the **MERN stack** (MongoDB, E
   }
   ```
 
+  ## Data Models
+
+### User
+
+| Field      | Type        | Description                           |
+|------------|-------------|---------------------------------------|
+| `_id`      | ObjectId    | Unique identifier for the user        |
+| `username` | String      | User's name                           |
+| `email`    | String      | User's email address                  |
+| `password` | String      | Hashed password (using bcrypt)        |
+| `cart`     | Array       | List of items in the user's cart      |
+| `wishlist` | Array       | List of items in the user's wishlist  |
+| `order`    | Array       | List of user’s past orders            |
+| `createdAt`| Date        | Timestamp when the user was created   |
+| `updatedAt`| Date        | Timestamp when the user was updated   |
+| `address`  | Object      | User’s address information            |
+| `firstname`| String      | User's first name                     |
+| `lastname` | String      | User's last name                      |
+
+### Product
+
+| Field          | Type        | Description                          |
+|----------------|-------------|--------------------------------------|
+| `_id`          | ObjectId    | Unique identifier for the product    |
+| `title`        | String      | Name or title of the product         |
+| `images`       | Array       | Array of product images (3)          |
+| `description`  | String      | Short description of the product     |
+| `originalprice`| Number      | Original price of the product        |
+| `sellingprice` | Number      | Discounted selling price             |
+| `discount`     | Number      | Discount percentage                  |
+| `category`     | String      | Category to which the product belongs|
+| `brandname`    | String      | Brand name of the product            |
+| `weight`       | String      | Weight or size information           |
+| `type`         | String      | Type of product (e.g., discount type)|
+| `createdAt`    | Date        | Timestamp when the product was created |
+| `updatedAt`    | Date        | Timestamp when the product was updated |
+
+### Category
+
+| Field         | Type      | Description                              |
+|---------------|-----------|------------------------------------------|
+| `_id`         | ObjectId  | Unique identifier for the category        |
+| `catname`     | String    | Name of the category (e.g., Fruits)       |
+| `image`       | String    | Image filename associated with the category |
+| `stocks`      | Number    | Number of items in stock for the category |
+| `description` | String    | Description of the category               |
+
+### Cart
+
+| Field      | Type      | Description                                  |
+|------------|-----------|----------------------------------------------|
+| `_id`      | ObjectId  | Unique identifier for the order              |
+| `products` | Array     | Array of products in the order (2 products)  |
+| `user`     | ObjectId  | ID of the user who placed the order          |
+
+### Order
+
+| Field       | Type    | Description               |
+|-------------|---------|---------------------------|
+| userId      | ObjectId| Reference to the user      |
+| products    | Array   | Products in the order      |
+| totalPrice  | Number  | Total order price          |
+| paymentMethod | String | Payment method chosen by the user |
+| shippingAddress | String | User's shipping address  |
+| payment_status       | Boolean | Payment status            |
+| paidAt      | Date    | Date and time of payment   |
+| isDelivered | Boolean | Delivery status           |
+| deliveredAt | Date    | Date and time of delivery  |
+
 ## Deployment
 
-The frontend is deployed on **Netlify**, and the backend is deployed on **Render**. MongoDB Atlas is used for database management.
+The frontend is deployed on **Netlify**, and the backend is deployed on **Render**. **MongoDB Atlas** is used for database management, and **Cloudinary** is used for image storage.
 
 ## License
 
