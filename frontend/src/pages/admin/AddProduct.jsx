@@ -40,9 +40,9 @@ function AddProduct() {
     images.forEach((image) => formData.append("images", image))
 
     // printing from data on console
-      for(let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+    //   for(let [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
 
     if (!title || !images || !description || !selectedCategory || selectedCategory == "" || !brandName || !weight || !originalprice || !discount) {
       toast.error("All fileds are required")
@@ -50,13 +50,19 @@ function AddProduct() {
       if (images.length > 5) {
         toast.error("Only 5 images upload")
       } else {
+        const toastId = toast.loading("Please wait ...")
         try {
           const response = await api.post('/api/addproduct', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
           })
-          toast.success(response.data.message)
+          toast.update(toastId, {
+            render: response.data.message,
+            type: "success",
+            isLoading: false,
+            autoClose: 3000
+          })
           // console.log(response.data.message)
           setTitle("")
           setDescription("")
@@ -70,6 +76,12 @@ function AddProduct() {
           setSelectedType("")
           fileInputRef.current.value = null
         } catch (error) {
+          toast.update(toastId, {
+            render: error.response.data.message,
+            type: "error",
+            isLoading: false,
+            autoClose: 3000
+          })
           console.error(`Error in uploading product : ${error}`)
         }
       }
@@ -80,7 +92,7 @@ function AddProduct() {
     if(originalprice==""){
       setSellingPrice("")
     }
-    setSellingPrice(originalprice - ((originalprice*discount)/100))
+    setSellingPrice(Math.ceil(originalprice - ((originalprice*discount)/100)))
   },[discount,sellingPrice])
 
   useEffect(() => {

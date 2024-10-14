@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import { Link } from "react-router-dom";
+import AddtoCart from "../../components/AddtoCart";
 
 function DiscountSection() {
 
   const [products,setProducts] = useState([])
+  const user = JSON.parse(localStorage.getItem('user'))
 
   useEffect(()=>{
     const fetchProducts = async()=>{
@@ -101,35 +103,7 @@ function DiscountSection() {
                               <span className="current">₹{Math.ceil(product?.sellingprice)}</span>
                               <div className="previous">₹{product?.originalprice}</div>
                             </div>
-                            <div className="cart-counter-action">
-                              <div className="quantity-edit">
-                                <input
-                                  type="text"
-                                  className="input"
-                                  defaultValue={1}
-                                />
-                                <div className="button-wrapper-action">
-                                  <button className="button">
-                                    <i className="fa-regular fa-chevron-down" />
-                                  </button>
-                                  <button className="button plus">
-                                    +<i className="fa-regular fa-chevron-up" />
-                                  </button>
-                                </div>
-                              </div>
-                              <a
-                                href="#"
-                                className="rts-btn btn-primary radious-sm with-icon"
-                              >
-                                <div className="btn-text">Add</div>
-                                <div className="arrow-icon">
-                                  <i className="fa-regular fa-cart-shopping" />
-                                </div>
-                                <div className="arrow-icon">
-                                  <i className="fa-regular fa-cart-shopping" />
-                                </div>
-                              </a>
-                            </div>
+                            <AddtoCart  productId={product?._id} userId={user._id}/>
                           </div>
                         </div>
                           ))
@@ -166,35 +140,7 @@ function DiscountSection() {
                               <span className="current">₹{Math.ceil(product?.sellingprice)}</span>
                               <div className="previous">₹{product?.originalprice}</div>
                             </div>
-                            <div className="cart-counter-action">
-                              <div className="quantity-edit">
-                                <input
-                                  type="text"
-                                  className="input"
-                                  defaultValue={1}
-                                />
-                                <div className="button-wrapper-action">
-                                  <button className="button">
-                                    <i className="fa-regular fa-chevron-down" />
-                                  </button>
-                                  <button className="button plus">
-                                    +<i className="fa-regular fa-chevron-up" />
-                                  </button>
-                                </div>
-                              </div>
-                              <a
-                                href="#"
-                                className="rts-btn btn-primary radious-sm with-icon"
-                              >
-                                <div className="btn-text">Add</div>
-                                <div className="arrow-icon">
-                                  <i className="fa-regular fa-cart-shopping" />
-                                </div>
-                                <div className="arrow-icon">
-                                  <i className="fa-regular fa-cart-shopping" />
-                                </div>
-                              </a>
-                            </div>
+                            <AddtoCart  productId={product?._id} userId={user._id}/>
                           </div>
                         </div>
                           ))

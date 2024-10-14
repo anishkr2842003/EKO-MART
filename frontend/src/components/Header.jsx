@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../utils/api";
+import { toast } from "react-toastify";
 
 function Header() {
 
   const [categories, setCategories] = useState([]);
+  const [cart, setCart] = useState([]);
+  const token = localStorage.getItem('token');
+
+  const user = JSON.parse(localStorage.getItem('user'))
 
   useEffect(() => {
     const fetchedCategory = async () => {
@@ -17,6 +22,23 @@ function Header() {
     }
     fetchedCategory()
   }, [])
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const response = await api.post('/api/showcart', { userId: user._id })
+        setCart(response.data.cart.products.lenght != 0 ? response.data.cart.products: 0)
+        // console.log(response)
+      } catch (error) {
+        toast.error(error.response.message)
+        // console.log(error)
+      }
+    }
+
+    fetchCart()
+  }, [cart])
+
+
 
   return (
     <>
@@ -218,132 +240,41 @@ function Header() {
                       </svg>
                     </div>
                   </div>
-                  <div className="accont-wishlist-cart-area-header">
-                    <Link to={'/account'} className="btn-border-only account">
-                      <i className="fa-light fa-user" />
-                      <span>Account</span>
-                    </Link>
-                    <Link
-                      to="/wishlist"
-                      className="btn-border-only wishlist"
-                    >
-                      <i className="fa-regular fa-heart" />
-                      <span className="text">Wishlist</span>
-                      <span className="number">2</span>
-                    </Link>
-                    <div className="btn-border-only cart category-hover-header">
-                      <i className="fa-sharp fa-regular fa-cart-shopping" />
-                      <span className="text">My Cart</span>
-                      <span className="number">2</span>
-                      {/* <div className="category-sub-menu card-number-show">
-                        <h5 className="shopping-cart-number">
-                          Shopping Cart (03)
-                        </h5>
-                        <div className="cart-item-1 border-top">
-                          <div className="img-name">
-                            <div className="thumbanil">
-                              <img src="/images/shop/cart-1.png" alt />
-                            </div>
-                            <div className="details">
-                              <a href="shop-details.html">
-                                <h5 className="title">
-                                  Foster Farms Breast Nuggets Shaped Chicken
-                                </h5>
-                              </a>
-                              <div className="number">
-                                1 <i className="fa-regular fa-x" />
-                                <span>$36.00</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="close-c1">
-                            <i className="fa-regular fa-x" />
-                          </div>
+                  {
+                    token ? (
+                      <div className="accont-wishlist-cart-area-header">
+                        <Link to={'/account'} className="btn-border-only account">
+                          <i className="fa-light fa-user" />
+                          <span>Account</span>
+                        </Link>
+                        <Link
+                          to="/wishlist"
+                          className="btn-border-only wishlist"
+                        >
+                          <i className="fa-regular fa-heart" />
+                          <span className="text">Wishlist</span>
+                          <span className="number">2</span>
+                        </Link>
+                        <div className="btn-border-only cart category-hover-header">
+                          <i className="fa-sharp fa-regular fa-cart-shopping" />
+                          <span className="text">My Cart</span>
+                          <span className="number">{cart.length}</span>
+                          <Link to={'/cart'} className="over_link" />
                         </div>
-                        <div className="cart-item-1">
-                          <div className="img-name">
-                            <div className="thumbanil">
-                              <img src="/images/shop/05.png" alt />
-                            </div>
-                            <div className="details">
-                              <a href="shop-details.html">
-                                <h5 className="title">
-                                  Foster Farms Breast Nuggets Shaped Chicken
-                                </h5>
-                              </a>
-                              <div className="number">
-                                1 <i className="fa-regular fa-x" />
-                                <span>$36.00</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="close-c1">
-                            <i className="fa-regular fa-x" />
-                          </div>
-                        </div>
-                        <div className="cart-item-1">
-                          <div className="img-name">
-                            <div className="thumbanil">
-                              <img src="/images/shop/04.png" alt />
-                            </div>
-                            <div className="details">
-                              <a href="shop-details.html">
-                                <h5 className="title">
-                                  Foster Farms Breast Nuggets Shaped Chicken
-                                </h5>
-                              </a>
-                              <div className="number">
-                                1 <i className="fa-regular fa-x" />
-                                <span>$36.00</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="close-c1">
-                            <i className="fa-regular fa-x" />
-                          </div>
-                        </div>
-                        <div className="sub-total-cart-balance">
-                          <div className="bottom-content-deals mt--10">
-                            <div className="top">
-                              <span>Sub Total:</span>
-                              <span className="number-c">$108.00</span>
-                            </div>
-                            <div className="single-progress-area-incard">
-                              <div className="progress">
-                                <div
-                                  className="progress-bar wow fadeInLeft"
-                                  role="progressbar"
-                                  style={{ width: "80%" }}
-                                  aria-valuenow={25}
-                                  aria-valuemin={0}
-                                  aria-valuemax={100}
-                                />
-                              </div>
-                            </div>
-                            <p>
-                              Spend More <span>$125.00</span> to reach{" "}
-                              <span>Free Shipping</span>
-                            </p>
-                          </div>
-                          <div className="button-wrapper d-flex align-items-center justify-content-between">
-                            <Link
-                              to={'/cart'}
-                              className="rts-btn btn-primary "
-                            >
-                              View Cart
-                            </Link>
-                            <a
-                              href="checkout.html"
-                              className="rts-btn btn-primary border-only"
-                            >
-                              CheckOut
-                            </a>
-                          </div>
-                        </div>
-                      </div> */}
-                      <Link to={'/cart'} className="over_link" />
-                    </div>
-                  </div>
+                      </div>
+                    ) : (
+                      <div className="accont-wishlist-cart-area-header">
+                        <Link to={'/signup'} className="btn-border-only account">
+                          <i className="fa-light fa-user" />
+                          <span>Signup</span>
+                        </Link>
+                        <Link to={'/login'} className="btn-border-only account">
+                          <i className="fa-light fa-user" />
+                          <span>Login</span>
+                        </Link>
+                      </div>
+                    )
+                  }
                 </div>
               </div>
             </div>

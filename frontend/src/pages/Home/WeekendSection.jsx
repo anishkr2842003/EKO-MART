@@ -11,7 +11,7 @@ function WeekendSection() {
               <div className="single-feature-card bg_image one">
                 <div className="content-area">
                   <a
-                    href="shop-grid-sidebar.html"
+                    
                     className="rts-btn btn-primary"
                   >
                     Weekend Discount
@@ -21,7 +21,7 @@ function WeekendSection() {
                     <span>Good Taste</span>
                   </h3>
                   <a
-                    href="shop-grid-sidebar.html"
+                    
                     className="shop-now-goshop-btn"
                   >
                     <span className="text">Shop Now</span>
@@ -39,7 +39,7 @@ function WeekendSection() {
               <div className="single-feature-card bg_image two">
                 <div className="content-area">
                   <a
-                    href="shop-grid-sidebar.html"
+                    
                     className="rts-btn btn-primary"
                   >
                     Weekend Discount
@@ -49,7 +49,7 @@ function WeekendSection() {
                     <span>Banana Chips</span>
                   </h3>
                   <a
-                    href="shop-grid-sidebar.html"
+                    
                     className="shop-now-goshop-btn"
                   >
                     <span className="text">Shop Now</span>
@@ -67,7 +67,7 @@ function WeekendSection() {
               <div className="single-feature-card bg_image three">
                 <div className="content-area">
                   <a
-                    href="shop-grid-sidebar.html"
+                    
                     className="rts-btn btn-primary"
                   >
                     Weekend Discount
@@ -77,7 +77,7 @@ function WeekendSection() {
                     <span>Chocolate Snacks</span>
                   </h3>
                   <a
-                    href="shop-grid-sidebar.html"
+                    
                     className="shop-now-goshop-btn"
                   >
                     <span className="text">Shop Now</span>
@@ -95,7 +95,7 @@ function WeekendSection() {
               <div className="single-feature-card bg_image four">
                 <div className="content-area">
                   <a
-                    href="shop-grid-sidebar.html"
+                    
                     className="rts-btn btn-primary"
                   >
                     Weekend Discount
@@ -105,7 +105,7 @@ function WeekendSection() {
                     <span>Flavors Awesome</span>
                   </h3>
                   <a
-                    href="shop-grid-sidebar.html"
+                    
                     className="shop-now-goshop-btn"
                   >
                     <span className="text">Shop Now</span>

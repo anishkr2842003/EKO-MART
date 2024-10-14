@@ -1,25 +1,49 @@
 import React, { useEffect, useState } from "react";
+import api from "../../utils/api";
 
-function CartCard() {
+function CartCard({ cart, updateTotal }) {
 
-    let price = 200;
-    let [qut,Setqut] = useState(1);
-    let [total,SetTotal] = useState(price)
+  let price = cart.product.sellingprice;
+  let [qut, Setqut] = useState(cart.quantity);
+  let [subtotal, SetSubTotal] = useState(price * cart.quantity)
 
-    useEffect(()=>{
-        SetTotal(price*qut)
-    }, [qut])
-    var handleIncQut = ()=>{
-        Setqut((prev)=> prev+1)
-        SetTotal(price*qut)
+  const user = JSON.parse(localStorage.getItem('user'))
+
+  useEffect(() => {
+    const newSubTotal = price * qut
+    const subtotalDifference = newSubTotal - subtotal;
+    SetSubTotal(newSubTotal)
+    updateTotal(subtotalDifference)
+  }, [qut])
+
+  var handleIncQut = (productId) => {
+    Setqut((prev) => prev + 1)
+    SetSubTotal(price * qut)
+
+    const data = { userId: user._id, productId: productId, quantity: qut + 1 }
+    // console.log(data)
+    updateCart(data)
+  }
+
+  var handleDecQut = (productId) => {
+    if (qut > 1) {
+      Setqut((prev) => prev - 1);
     }
 
-    var handleDecQut = ()=>{
-        if (qut > 1) {
-            Setqut((prev) => prev - 1);
-          }
+    const data = { userId: user._id, productId: productId, quantity: qut - 1 }
+    updateCart(data)
+
+  }
+
+  const updateCart = async (data) => {
+    try {
+      const response = await api.post('/api/updatecart', data)
+      // console.log(response)
+    } catch (error) {
+      // console.log(error)
     }
-    // console.log(qut)
+  }
+
 
   return (
     <>
@@ -29,13 +53,14 @@ function CartCard() {
             <img src="/images/shop/01.png" alt="shop" />
           </div>
           <div className="thumbnail">
-            <img src="/images/shop/02.png" alt="shop" />
+            <img src={`${api.defaults.baseURL}uploads/products/${cart?.product?.images[0]}`} alt="shop" />
           </div>
           <div className="information">
             <h6 className="title">
-              SunChips Minis, Garden Salsa Flavored Canister, Multigrain Chips
+              {cart.product.title}
             </h6>
-            <span>SKU:BG-1001</span>
+            {/* <span>SKU:BG-1001</span> */}
+            <span>Category: {cart.product.category}</span>
           </div>
         </div>
         <div className="price">
@@ -43,21 +68,21 @@ function CartCard() {
         </div>
         <div className="quantity">
           <div className="quantity-edit">
-            <input type="text" className="input" value={qut} readOnly />
+            <input type="text" className="input" value={qut} readOnly onChange={(e) => Setqut(e.target.value)} />
             <div className="button-wrapper-action">
-              <button className="button" onClick={handleDecQut}>
+              <button className="button" onClick={() => handleDecQut(cart?.product?._id)}>
                 <i className="fa-regular fa-chevron-down" />
               </button>
-              <button className="button plus" onClick={handleIncQut}>
+              <button className="button plus" onClick={() => handleIncQut(cart?.product?._id)}>
                 +<i className="fa-regular fa-chevron-up" />
               </button>
             </div>
           </div>
         </div>
         <div className="subtotal">
-          <p>₹ {total}</p>
+          <p>₹ {subtotal}</p>
         </div>
-        <div className="button-area">
+        {/* <div className="button-area">
           <a href="#" className="rts-btn btn-primary radious-sm with-icon">
             <div className="btn-text">Add To Cart</div>
             <div className="arrow-icon">
@@ -67,7 +92,7 @@ function CartCard() {
               <i className="fa-regular fa-cart-shopping" />
             </div>
           </a>
-        </div>
+        </div> */}
       </div>
     </>
   );

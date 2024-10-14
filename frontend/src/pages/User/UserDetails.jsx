@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../utils/userContext";
 
 function UserDetails() {
+
+  const user = useContext(UserContext)
+
   return (
     <>
       <div
@@ -13,8 +17,8 @@ function UserDetails() {
       >
         <div className="dashboard-account-area">
           <h2 className="title">
-            Hello Raisa! (Not Raisa?) 
-            <Link to={'/'}> Log Out.</Link>
+            Hello {user?.firstname || user?.username }! 
+            {/* <Link to={'/'}> Log Out.</Link> */}
           </h2>
           <p className="disc">
             From your account dashboard you can view your recent orders, manage
