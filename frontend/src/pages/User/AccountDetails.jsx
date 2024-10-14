@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import api from "../../utils/api";
 import { toast, ToastContainer } from "react-toastify";
-import { UserContext } from "../../utils/userContext";
+import { UserContext } from "../../utils/userContext.jsx";
 
 function AccountDetails() {
 

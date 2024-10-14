@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import api from "../../utils/api";
-import { UserProvider } from "../../utils/userContext";
+import { UserProvider } from "../../utils/userContext.jsx";
 
 function Account() {
 
