@@ -253,7 +253,7 @@ function Checkout() {
                                         <div className="single-shop-list" key={cart._id}>
                                             <div className="left-area">
                                                 <a href="#" className="thumbnail">
-                                                    <img src={`${api.defaults.baseURL}uploads/products/${cart?.product?.images[0]}`} />
+                                                    <img src={cart?.product?.images[0].url} />
                                                 </a>
                                                 <a href="#" className="title">
                                                     {cart?.product?.title}

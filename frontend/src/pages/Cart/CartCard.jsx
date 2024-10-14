@@ -53,7 +53,7 @@ function CartCard({ cart, updateTotal }) {
             <img src="/images/shop/01.png" alt="shop" />
           </div>
           <div className="thumbnail">
-            <img src={`${api.defaults.baseURL}uploads/products/${cart?.product?.images[0]}`} alt="shop" />
+            <img src={cart.product.images[0].url} alt="shop" />
           </div>
           <div className="information">
             <h6 className="title">
