@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const {Schema} = mongoose
+const { Schema } = mongoose
 
 const userSchema = new Schema({
     username: {
@@ -19,7 +19,7 @@ const userSchema = new Schema({
         type: String
     },
     address: {
-        country : {
+        country: {
             type: String
         },
         street_address: {
@@ -31,7 +31,7 @@ const userSchema = new Schema({
         state: {
             type: String
         },
-        zip_code:{
+        zip_code: {
             type: Number
         },
         phone: {
@@ -50,7 +50,7 @@ const userSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     }]
-}, {timestamps: true})
+}, { timestamps: true })
 
 const userModel = mongoose.model('User', userSchema);
 
