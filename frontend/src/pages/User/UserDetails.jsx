@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../utils/userContext.jsx";
+import { UserContext } from "../../utils/UserContext.jsx";
 
 function UserDetails() {
 
