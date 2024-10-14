@@ -28,7 +28,7 @@ function FeaturedCard({product}) {
                 </span>
                 <i className="fa-solid fa-bookmark" />
               </div>
-              <img src={category?.image?.url} alt="grocery" />
+              <img src={product?.images[0]?.url} alt="grocery" />
             </Link>
             <div className="action-share-option">
               <div
