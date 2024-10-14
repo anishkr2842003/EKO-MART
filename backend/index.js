@@ -8,6 +8,9 @@ import DBConn from './utils/DBCon.js'
 
 import productRoute from './Routes/productRoute.js'
 import categoryRoute from './Routes/categoryRoute.js'
+import userRoute from './Routes/userRoute.js'
+import cartRoute from './Routes/cartRoute.js'
+import checkoutRoute from './Routes/checkoutRoute.js'
 
 const app = express()
 app.use(cors());
@@ -26,7 +29,9 @@ app.get('/', (req,res)=>{
 
 app.use("/api", productRoute)
 app.use("/api", categoryRoute)
-
+app.use("/api", userRoute)
+app.use("/api", cartRoute)
+app.use("/api", checkoutRoute)
 
 // Database connection
 DBConn();

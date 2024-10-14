@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import api from '../../utils/api';
 
@@ -25,6 +24,7 @@ function AddCategory() {
     if (!catname || !stocks || !description || !image) {
       toast.error("All fileds are required")
     } else {
+      const toastId = toast.loading("Please wait ...")
       try {
         const response = await api.post('/api/addcategory', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
@@ -35,9 +35,20 @@ function AddCategory() {
         setDescription("")
         setImage(null)
         fileInputRef.current.value = null
-        toast.success(response.data.message)
+        toast.update(toastId, {
+          render: response.data.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000
+        })
       } catch (error) {
-        console.error(error.response)
+        toast.update(toastId, {
+          render: error.response.data.message,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000
+        })
+        // console.error(error.response)
       }
     }
   }

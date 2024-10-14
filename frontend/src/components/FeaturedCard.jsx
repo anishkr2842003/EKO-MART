@@ -1,6 +1,7 @@
 import React from "react";
 import api from "../utils/api";
 import { Link } from "react-router-dom";
+import AddtoCart from "./AddtoCart";
 
 function FeaturedCard({product}) {
 // console.log(product)
@@ -8,6 +9,11 @@ function FeaturedCard({product}) {
 //   const {_id,brandname,category,description,originalprice,sellingprice,title,weight,images} = product
 //   // console.log(_id)
 // }
+
+  // const user = JSON.parse(localStorage.getItem('user'))
+  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+
+
 
   return (
     <>
@@ -51,38 +57,20 @@ function FeaturedCard({product}) {
             </div>
           </div>
           <div className="body-content">
-            <a href="shop-details.html">
+            <Link to={`/singleproduct/${product?._id}`}>
               <h4 className="title">
                 {product?.title}
               </h4>
-            </a>
+            </Link>
             <span className="availability">{product?.weight} Pack</span>
             <div className="price-area">
               <span className="current">₹{Math.ceil(product?.sellingprice)}</span>
               <div className="previous">₹{product?.originalprice}</div>
             </div>
-            <div className="cart-counter-action">
-              <div className="quantity-edit">
-                <input type="text" className="input" defaultValue={1} />
-                <div className="button-wrapper-action">
-                  <button className="button">
-                    <i className="fa-regular fa-chevron-down" />
-                  </button>
-                  <button className="button plus">
-                    +<i className="fa-regular fa-chevron-up" />
-                  </button>
-                </div>
-              </div>
-              <a href="#" className="rts-btn btn-primary radious-sm with-icon">
-                <div className="btn-text">Add</div>
-                <div className="arrow-icon">
-                  <i className="fa-regular fa-cart-shopping" />
-                </div>
-                <div className="arrow-icon">
-                  <i className="fa-regular fa-cart-shopping" />
-                </div>
-              </a>
-            </div>
+            {
+              user ? (<AddtoCart productId={product?._id} userId={user._id}/>) : (<AddtoCart productId={product?._id} userId={null}/>)
+            }
+            {/* <AddtoCart productId={product?._id} userId={user._id}/> */}
           </div>
         </div>
       </div>

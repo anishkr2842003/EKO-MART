@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-
-
-
-
+import api from "../../utils/api";
+import { UserProvider } from "../../utils/userContext";
 
 function Account() {
 
     const location = useLocation()
+
+    const [userDetails,setUserDetails] = useState({})
+// console.log(userDetails)
+
+    useEffect(()=>{
+      const token = localStorage.getItem('token')
+      const fetchUserDetails = async()=>{
+        try {
+          const response = await api.get('/api/userdetails',{headers:{Authorization: `Bearer ${token}`}})
+          localStorage.setItem('user', JSON.stringify(response.data.user))
+          setUserDetails(localStorage.getItem('user'))
+          // console.log(localStorage.getItem('user'))      
+          // console.log(response.data.user)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      fetchUserDetails()
+    },[])
     
 
   return (
     <>
+      <UserProvider>
       <div>
         <div className="rts-navigation-area-breadcrumb">
           <div className="container-2">
@@ -139,6 +157,7 @@ function Account() {
           </div>
         </div>
       </div>
+      </UserProvider>
     </>
   );
 }

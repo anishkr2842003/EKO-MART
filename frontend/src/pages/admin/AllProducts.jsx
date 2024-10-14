@@ -69,14 +69,26 @@ const AllProducts = () => {
   }, []);
 
   const handleDeleteProduct = async(id)=>{
-    console.log(id)
+    // console.log(id)
+    const toastId = toast.loading("Please wait ...")
     try {
       const response = await api.get(`/api/productdelete/${id}`)
-      console.log(response)
-      toast.success(response.data.message)
+      // console.log(response)
       setProducts(products.filter((product)=> product._id != id))
+      toast.update(toastId, {
+        render: response.data.message,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000
+      })
     } catch (error) {
-      console.log(error)
+      toast.update(toastId, {
+        render: error.response.data.message,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000
+      })
+      // console.log(error)
     }
   }
 
@@ -117,7 +129,7 @@ const AllProducts = () => {
           }
         </tbody>
       </ProductTable>
-      <ToastContainer/>
+      <ToastContainer autoClose={3000} closeButton={false} />
     </div>
   );
 

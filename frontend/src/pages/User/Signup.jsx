@@ -1,7 +1,50 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../utils/api";
+import { toast, ToastContainer } from "react-toastify";
 
 function Signup() {
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!username || !email || !password) {
+      toast.error("All fields are required")
+    } else {
+      const toastId = toast.loading("Loading..."); 
+      try {
+        const userdata = { username, email, password }
+        const response = await api.post('/api/signup', userdata);
+        // console.log(response)
+        toast.update(toastId, { 
+          render: response.data.message, 
+          type: "success", 
+          isLoading: false, 
+          autoClose: 3000 
+        });
+        setUsername("")
+        setEmail("")
+        setPassword("")
+        setTimeout(()=>{
+          navigate('/login')
+        },1500)
+      } catch (error) {
+        console.log(error)
+        toast.update(toastId, { 
+          render: error.response.data.message, 
+          type: "error", 
+          isLoading: false, 
+          autoClose: 3000 
+        });
+      }
+    }
+  }
+
   return (
     <>
       <div>
@@ -39,18 +82,18 @@ function Signup() {
                     />
                   </div>
                   <h3 className="title">Register Into Your Account</h3>
-                  <form action="#" className="registration-form">
+                  <form className="registration-form" onSubmit={handleSubmit}>
                     <div className="input-wrapper">
                       <label htmlFor="name">Username*</label>
-                      <input type="text" id="name" />
+                      <input type="text" id="name" onChange={(e) => setUsername(e.target.value)} />
                     </div>
                     <div className="input-wrapper">
                       <label htmlFor="email">Email*</label>
-                      <input type="email" id="email" />
+                      <input type="email" id="email" onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="input-wrapper">
                       <label htmlFor="password">Password*</label>
-                      <input type="password" id="password" />
+                      <input type="password" id="password" onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <button className="rts-btn btn-primary">
                       Register Account
@@ -85,6 +128,7 @@ function Signup() {
         </div>
         {/* rts register area end */}
       </div>
+      <ToastContainer autoClose={3000} closeButton={false} />
     </>
   );
 }

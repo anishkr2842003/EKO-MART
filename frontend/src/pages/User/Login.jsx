@@ -1,7 +1,45 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import api from "../../utils/api";
 
 function Login() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("")
+
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const userdata = { email, password }
+    // console.log(userdata)
+    const toastId = toast.loading("Please wait ...")
+    try {
+      const response = await api.post('/api/login', userdata);
+      // console.log(response)
+      toast.update(toastId, {
+        render: response.data.message,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000
+      })
+      localStorage.setItem("token", response.data.token)
+      localStorage.setItem("user", JSON.stringify(response.data.user))
+      setTimeout(() => {
+        navigate('/')
+      }, 1000)
+    } catch (error) {
+      toast.update(toastId, {
+        render: error.response.data.message,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000
+      })
+      // console.log(error)
+    }
+  }
+
   return (
     <>
       <div>
@@ -39,14 +77,14 @@ function Login() {
                     />
                   </div>
                   <h3 className="title">Login Into Your Account</h3>
-                  <form action="#" className="registration-form">
+                  <form className="registration-form" onSubmit={handleSubmit}>
                     <div className="input-wrapper">
                       <label htmlFor="email">Email*</label>
-                      <input type="email" id="email" />
+                      <input type="email" id="email" onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="input-wrapper">
                       <label htmlFor="password">Password*</label>
-                      <input type="password" id="password" />
+                      <input type="password" id="password" onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <button className="rts-btn btn-primary">
                       Login Account
@@ -81,6 +119,7 @@ function Login() {
         </div>
         {/* rts register area end */}
       </div>
+      <ToastContainer autoClose={3000} closeButton={false} />
     </>
   );
 }

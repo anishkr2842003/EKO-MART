@@ -1,12 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CartCard from "./CartCard";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import api from "../../utils/api";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 function Cart() {
+
+  const [cart, setCart] = useState([])
+  const [total, setTotal] = useState(0)
+  const [newCart, SetNewCart] = useState([]);
+  const user = JSON.parse(localStorage.getItem('user'))
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const response = await api.post('/api/showcart', { userId: user._id })
+        setCart(response.data.cart.products)
+        // console.log(response)
+        const initialTotal = response.data.cart.products.reduce(
+          (acc, item) => acc + item.product.sellingprice * item.quantity,
+          0
+        );
+        setTotal(initialTotal)
+      } catch (error) {
+        toast.error(error.response.data.message)
+        // console.log(error)
+      }
+    }
+    fetchCart()
+  }, [])
+
+  const updateTotal = (subtotalDifference) => {
+    setTotal((prev) => prev + subtotalDifference)
+  }
+
+
+
   return (
     <>
-    <Header/>
+      <Header />
       {/* rts cart area start */}
       <div className="rts-cart-area rts-section-gap bg_light-1">
         <div className="container">
@@ -48,8 +82,13 @@ function Cart() {
                     <p>SubTotal</p>
                   </div>
                 </div>
-                <CartCard/>
-                <div className="bottom-cupon-code-cart-area">
+                {
+                  cart.map((singleCart, index) => (
+                    <CartCard cart={singleCart} key={index} updateTotal={updateTotal} />
+                  ))
+                }
+
+                {/* <div className="bottom-cupon-code-cart-area">
                   <form action="#">
                     <input type="text" placeholder="Cupon Code" />
                     <button className="rts-btn btn-primary">
@@ -59,17 +98,28 @@ function Cart() {
                   <a href="#" className="rts-btn btn-primary mr--50">
                     Clear All
                   </a>
-                </div>
+                </div> */}
+                {/* <div className="bottom-cupon-code-cart-area">
+                  <form action="#">
+                    <input type="text" placeholder="Cupon Code" />
+                    <button className="rts-btn btn-primary">
+                      Apply Coupon
+                    </button>
+                  </form>
+                  <a href="#" className="rts-btn btn-primary mr--50">
+                    Clear All
+                  </a>
+                </div> */}
               </div>
             </div>
             <div className="col-xl-3 col-lg-12 col-md-12 col-12 order-1 order-xl-2 order-lg-1 order-md-1 order-sm-1">
               <div className="cart-total-area-start-right">
                 <h5 className="title">Cart Totals</h5>
                 <div className="subtotal">
-                  <span>Subtotal</span>
-                  <h6 className="price">$1100.00</h6>
+                  <span>Total</span>
+                  <h6 className="price">₹ {total}</h6>
                 </div>
-                <div className="shipping">
+                {/* <div className="shipping">
                   <span>Shipping</span>
                   <ul>
                     <li>
@@ -96,16 +146,18 @@ function Cart() {
                       <p className="bold">Calculate Shipping</p>
                     </li>
                   </ul>
-                </div>
+                </div> */}
                 <div className="bottom">
-                  <div className="wrapper">
+                  {/* <div className="wrapper">
                     <span>Subtotal</span>
                     <h6 className="price">$1100.00</h6>
-                  </div>
+                  </div> */}
                   <div className="button-area">
-                    <button className="rts-btn btn-primary">
-                      Proceed To Checkout
-                    </button>
+                    <Link to={'/checkout'}>
+                      <button className="rts-btn btn-primary">
+                        Proceed To Checkout
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -114,7 +166,7 @@ function Cart() {
         </div>
       </div>
       {/* rts cart area end */}
-      <Footer/>
+      <Footer />
     </>
   );
 }

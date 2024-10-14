@@ -50,14 +50,14 @@ const ProductTable = styled.table`
 
 const Category = () => {
 
-  const [categories,setCategories] = useState([]);
-  const [loading,setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(()=>{
-    const fetchCategories = async()=>{
+  useEffect(() => {
+    const fetchCategories = async () => {
       try {
         const response = await api.get('/api/allcategory');
-          setCategories(response.data.categories);
+        setCategories(response.data.categories);
         setLoading(false)
         // console.log(response)
       } catch (error) {
@@ -66,19 +66,31 @@ const Category = () => {
       }
     }
     fetchCategories()
-  },[])
+  }, [])
 
-  const handleDeleteCategory = async(id)=>{
+  const handleDeleteCategory = async (id) => {
+    const toastId = toast.loading("Please wait ...")
     try {
       const response = await api.get(`http://localhost:8000/api/categorydelete/${id}`)
-      toast.success(response.data.message)
-      setCategories(categories.filter((category)=> category._id != id))
+      setCategories(categories.filter((category) => category._id != id))
+      toast.update(toastId, {
+        render: response.data.message,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000
+      })
     } catch (error) {
-      console.log('Deleting category')
+      // console.log('Deleting category')
+      toast.update(toastId, {
+        render: error.response.data.message,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000
+      })
     }
   }
 
-  if(loading){
+  if (loading) {
     return (
       <div><h2>Loading...</h2></div>
     )
@@ -99,23 +111,23 @@ const Category = () => {
         </thead>
         <tbody>
           {
-          categories.length > 0 ? categories.map((category, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{category.catname}</td>
-              {/* <td>${category.price}</td> */}
-              <td>{category.stocks}</td>
-              <td>
-                {/* <button className="see-btn">See</button> */}
-                <button className="edit-btn">Edit</button>
-                <button className="delete-btn" onClick={()=> handleDeleteCategory(category._id)}>Delete</button>
-              </td>
-            </tr>
-          )) : <tr><td colSpan={4}><h4>No category found</h4></td></tr>
+            categories.length > 0 ? categories.map((category, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{category.catname}</td>
+                {/* <td>${category.price}</td> */}
+                <td>{category.stocks}</td>
+                <td>
+                  {/* <button className="see-btn">See</button> */}
+                  <button className="edit-btn">Edit</button>
+                  <button className="delete-btn" onClick={() => handleDeleteCategory(category._id)}>Delete</button>
+                </td>
+              </tr>
+            )) : <tr><td colSpan={4}><h4>No category found</h4></td></tr>
           }
         </tbody>
       </ProductTable>
-      <ToastContainer/>
+      <ToastContainer autoClose={3000} closeButton={false} />
     </div>
   );
 };

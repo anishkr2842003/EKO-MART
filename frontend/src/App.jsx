@@ -24,6 +24,8 @@ import AddProduct from './pages/admin/AddProduct'
 import Category from './pages/admin/Category'
 import AddCategory from './pages/admin/AddCategory'
 import AdminLogin from './pages/admin/AdminLogin'
+import ProtectedRoute from './components/ProtectedRoute'
+import Checkout from './pages/User/Checkout'
 
 
 function App() {
@@ -31,11 +33,12 @@ function App() {
   return (
     <>
      <Routes>
-      <Route path='/' element={<Home/>}/>
-      <Route path='/cart' element={<Cart/>}/>
-      <Route path='/wishlist' element={<Wishlist/>}/>
+      <Route path='/' element={<ProtectedRoute><Home/></ProtectedRoute>}/>
+      <Route path='/cart' element={<ProtectedRoute><Cart/></ProtectedRoute>}/>
+      <Route path='/wishlist' element={<ProtectedRoute><Wishlist/></ProtectedRoute>}/>
+      <Route path='/checkout' element={<ProtectedRoute><Checkout/></ProtectedRoute>}/>
 
-      <Route path='/account' element={<Account/>}>
+      <Route path='/account' element={<ProtectedRoute><Account/></ProtectedRoute>}>
         <Route index element={<UserDetails/>}/>
         <Route path='order' element={<Order/>}/>
         <Route path='ordertracking' element={<OrderTracking/>}/>
