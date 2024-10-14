@@ -145,6 +145,9 @@ An advanced e-commerce web application built with the **MERN stack** (MongoDB, E
 
 ## API Endpoints
 
+### Base URL
+**URL**: `https://eko-mart.onrender.com/` 
+
 ### User APIs
 
 - **Signup**:  
