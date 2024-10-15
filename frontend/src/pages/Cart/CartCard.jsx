@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
+import { toast, ToastContainer } from "react-toastify";
 
-function CartCard({ cart, updateTotal }) {
+function CartCard({ cart, updateTotal, setCart }) {
 
   let price = cart.product.sellingprice;
   let [qut, Setqut] = useState(cart.quantity);
@@ -44,12 +45,38 @@ function CartCard({ cart, updateTotal }) {
     }
   }
 
+  const handleDeleteCart = async (productId) => {
+    const data = { productId, userId: user._id }
+    const toastId = toast.loading("Please wait ...")
+    try {
+      const response = await api.post('/api/deletecart', data);
+
+      toast.update(toastId, {
+        render: response.data.message,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000
+      });
+
+      setCart((prev) => prev.filter((item) => item.product._id != productId))
+      updateTotal(-subtotal)
+    } catch (error) {
+      toast.update(toastId, {
+        render: error.response.data.message,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000
+      })
+      // console.log(error)
+    }
+  }
+
 
   return (
     <>
       <div className="single-cart-area-list main  item-parent">
         <div className="product-main-cart">
-          <div className="close section-activation">
+          <div className="close section-activation" onClick={() => handleDeleteCart(cart.product._id)}>
             <img src="/images/shop/01.png" alt="shop" />
           </div>
           <div className="thumbnail">

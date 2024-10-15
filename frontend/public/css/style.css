@@ -23341,7 +23341,7 @@ body.modal-open {
 
 .single-cart-area-list.main .quantity-edit input {
   padding: 0;
-  max-width: 10px;
+  max-width: 30px;
   font-weight: 600;
 }
 

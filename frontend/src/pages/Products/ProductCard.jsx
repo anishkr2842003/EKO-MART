@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import api from "../../utils/api";
+import AddtoCart from "../../components/AddtoCart";
 
 function ProductCard({product}) {
+  
+  const user = JSON.parse(localStorage.getItem('user'))
+
   return (
     <>
       <div className="col-lg-20 col-lg-4 col-md-6 col-sm-6 col-12">
@@ -57,7 +61,7 @@ function ProductCard({product}) {
               <span className="current">₹{Math.ceil(product?.sellingprice)}</span>
               <div className="previous">₹{product?.originalprice}</div>
             </div>
-            <div className="cart-counter-action">
+            {/* <div className="cart-counter-action">
               <div className="quantity-edit">
                 <input type="text" className="input" defaultValue={1} />
                 <div className="button-wrapper-action">
@@ -78,7 +82,8 @@ function ProductCard({product}) {
                   <i className="fa-regular fa-cart-shopping" />
                 </div>
               </a>
-            </div>
+            </div> */}
+            <AddtoCart productId={product?._id} userId={user._id}/>
           </div>
         </div>
       </div>

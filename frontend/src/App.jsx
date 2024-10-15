@@ -36,7 +36,7 @@ function App() {
       <Route path='/' element={<ProtectedRoute><Home/></ProtectedRoute>}/>
       <Route path='/cart' element={<ProtectedRoute><Cart/></ProtectedRoute>}/>
       <Route path='/wishlist' element={<ProtectedRoute><Wishlist/></ProtectedRoute>}/>
-      <Route path='/checkout' element={<ProtectedRoute><Checkout/></ProtectedRoute>}/>
+      <Route path='/checkout/:orderId' element={<ProtectedRoute><Checkout/></ProtectedRoute>}/>
 
       <Route path='/account' element={<ProtectedRoute><Account/></ProtectedRoute>}>
         <Route index element={<UserDetails/>}/>

@@ -3,40 +3,60 @@ import CartCard from "./CartCard";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import api from "../../utils/api";
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 
 function Cart() {
+  const [cart, setCart] = useState([]);
+  const [total, setTotal] = useState(0);
+  // const [newCart, SetNewCart] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
 
-  const [cart, setCart] = useState([])
-  const [total, setTotal] = useState(0)
-  const [newCart, SetNewCart] = useState([]);
-  const user = JSON.parse(localStorage.getItem('user'))
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await api.post('/api/showcart', { userId: user._id })
-        setCart(response.data.cart.products)
+        const response = await api.post("/api/showcart", { userId: user._id });
+        setCart(response.data.cart.products);
         // console.log(response)
         const initialTotal = response.data.cart.products.reduce(
           (acc, item) => acc + item.product.sellingprice * item.quantity,
           0
         );
-        setTotal(initialTotal)
+        setTotal(initialTotal);
       } catch (error) {
-        toast.error(error.response.data.message)
+        toast.error(error.response.data.message);
         // console.log(error)
       }
-    }
-    fetchCart()
-  }, [])
+    };
+    fetchCart();
+  }, []);
 
   const updateTotal = (subtotalDifference) => {
-    setTotal((prev) => prev + subtotalDifference)
+    setTotal((prev) => prev + subtotalDifference);
+  };
+
+  const handleCheckOut = async()=>{
+    const orderData = {
+      userId: user._id,
+      items: cart.map((item)=> ({productId: item.product._id, quantity: item.quantity})),
+      totalAmount: total,
+    }
+    try {
+      const response = await api.post('/api/createorder', orderData)
+      // console.log(response)
+      if(response){
+        if (response.data && response.data.order) {
+          navigate(`/checkout/${response.data.order._id}`);
+      } else {
+          console.error('Order not found in response:', response.data);
+      }
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
-
-
 
   return (
     <>
@@ -82,11 +102,14 @@ function Cart() {
                     <p>SubTotal</p>
                   </div>
                 </div>
-                {
-                  cart.map((singleCart, index) => (
-                    <CartCard cart={singleCart} key={index} updateTotal={updateTotal} />
-                  ))
-                }
+                {cart.map((singleCart, index) => (
+                  <CartCard
+                    cart={singleCart}
+                    key={index}
+                    updateTotal={updateTotal}
+                    setCart={setCart}
+                  />
+                ))}
 
                 {/* <div className="bottom-cupon-code-cart-area">
                   <form action="#">
@@ -153,11 +176,10 @@ function Cart() {
                     <h6 className="price">$1100.00</h6>
                   </div> */}
                   <div className="button-area">
-                    <Link to={'/checkout'}>
-                      <button className="rts-btn btn-primary">
+                    
+                      <button className="rts-btn btn-primary" onClick={handleCheckOut}>
                         Proceed To Checkout
                       </button>
-                    </Link>
                   </div>
                 </div>
               </div>
@@ -167,6 +189,7 @@ function Cart() {
       </div>
       {/* rts cart area end */}
       <Footer />
+      <ToastContainer autoClose={3000} closeButton={false} />
     </>
   );
 }

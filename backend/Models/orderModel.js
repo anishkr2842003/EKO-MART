@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
-import items from 'razorpay/dist/types/items'
 
-const {Schema} = mongoose
+const { Schema } = mongoose
 
 const orderSchema = new Schema({
     userId: {
@@ -10,12 +9,13 @@ const orderSchema = new Schema({
     },
     items: [
         {
-            productId : {type: mongoose.Schema.Types.ObjectId},
-            quantity : {type: Number}
+            productId: { type: mongoose.Schema.Types.ObjectId , ref: 'Product'},
+            quantity: { type: Number, min: 1 }
         }
     ],
     totalAmount: {
         type: Number,
+        min: 0
     },
     paymentId: {
         type: String

@@ -3,11 +3,15 @@ import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import api from '../../utils/api'
 import { toast, ToastContainer } from 'react-toastify'
+import { useParams } from 'react-router-dom'
 
 function Checkout() {
 
     const user = JSON.parse(localStorage.getItem('user'))
-    const [carts, SetCarts] = useState([])
+    const { orderId } = useParams(); 
+
+    // const [carts, SetCarts] = useState([])
+    const [orders,setOrders] = useState([])
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [email, setEmail] = useState("")
@@ -37,20 +41,23 @@ function Checkout() {
             setZipcode(user?.address?.zip_code || "")
             setPhone(user?.address?.phone || "")
         }
-
         const fetchCart = async () => {
-            const response = await api.post('/api/showcart', { userId: user._id })
-            SetCarts(response.data.cart.products)
+            const response = await api.get(`/api/showorder/${orderId}`)
+            setOrders(response.data.order.items)
             // console.log(response)
         }
+       
+
         fetchCart()
-    }, [])
+    }, [orderId])
+    console.log(orders)
 
     const totalPrice = () => {
-        return carts.reduce((total, cart) => {
-            return total + (cart.product.sellingprice * cart.quantity)
-        }, 0)
+        return orders.reduce((acc, order) => {
+            return acc + (order.productId.sellingprice * order.quantity);
+        }, 0);
     }
+    
 
     const updateAddress = async (e) => {
         e.preventDefault()
@@ -100,16 +107,18 @@ function Checkout() {
     }, [firstname, lastname, email, country, address, town, state, zipcode, phone, paymentMethod, termsAccepted]);
 
     const handlePayment = async () => {
+
         const orderData = {
             amount: totalPrice(),
             currency: 'INR'
         }
 
         try {
-            const response = await api.post('/api/createorder', orderData)
-            const { amount, id: order_id, currency } = response.data;
+            const response = await api.post('/api/startpayment', orderData)
+            const { amount, id: order_id, currency } = response.data.order;
             console.log(response)
 
+            console.log(amount)
             const options = {
                 key: 'rzp_test_O6Bn6Gx3D2bGKN',
                 amount: amount,
@@ -249,17 +258,17 @@ function Checkout() {
 
                                 {
 
-                                    carts.map((cart) => (
-                                        <div className="single-shop-list" key={cart._id}>
+                                    orders.map((order) => (
+                                        <div className="single-shop-list" key={order._id}>
                                             <div className="left-area">
                                                 <a href="#" className="thumbnail">
-                                                    <img src={cart?.product?.images[0].url} />
+                                                    <img src={order.productId.images[0].url} />
                                                 </a>
                                                 <a href="#" className="title">
-                                                    {cart?.product?.title}
+                                                {order.productId.title}
                                                 </a>
                                             </div>
-                                            <span className="price">₹ {cart?.product?.sellingprice * cart?.quantity}</span>
+                                            <span className="price">₹ {order.productId.sellingprice * order.quantity}</span>
                                         </div>
                                     ))
                                 }

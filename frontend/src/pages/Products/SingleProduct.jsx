@@ -3,6 +3,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { Link, useParams } from "react-router-dom";
 import api from "../../utils/api";
+import { toast, ToastContainer } from "react-toastify";
 
 function SingleProduct() {
 
@@ -11,15 +12,42 @@ function SingleProduct() {
   const [product, setProduct] = useState({})
   const [currentImage, setCurrentImage] = useState("")
   const [activeIndex, setActiveIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+
+  const user = JSON.parse(localStorage.getItem('user'))
+
+  const handleInc = () => {
+    setQuantity((prev) => prev + 1)
+  }
+
+  const handleDec = () => {
+    if (quantity != 1) {
+      setQuantity((prev) => prev - 1)
+    } else {
+      setQuantity(1)
+    }
+  }
+
+  const handleAddtoCart = async () => {
+    const data = { productId: product._id, userId: user._id, quantity }
+    try {
+      const response = await api.post('/api/addtocart', data)
+      // console.log(response)
+      toast.success(response.data.message)
+    } catch (error) {
+      toast.error(error.response.data.message)
+      // console.log(error)
+    }
+  }
 
 
-  const handleImageChange = (Imagesrc,index) => {
+  const handleImageChange = (Imagesrc, index) => {
     setCurrentImage(Imagesrc)
     setActiveIndex(index)
   }
 
   useEffect(() => {
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
     const fetchSingleProduct = async () => {
       try {
         const response = await api.get(`/api/singleproduct/${id}`)
@@ -79,23 +107,23 @@ function SingleProduct() {
                             <div className="thumb-wrapper one filterd-items figure">
 
                               <div className="product-thumb">
-                                <img src={currentImage} alt="product-thumb"/>
+                                <img src={currentImage} alt="product-thumb" />
                               </div>
                             </div>
                             <div className="product-thumb-filter-group">
                               {
-                                product?.images?.map((image,index)=>(
+                                product?.images?.map((image, index) => (
                                   <div className={`thumb-filter filter-btn ${activeIndex == index && 'active'}`} key={index}
-                                onClick={()=>handleImageChange(image.url, index)}
-                              >
-                                <img
-                                  src={image.url}
-                                  alt="product-thumb-filter"
-                                />
-                              </div>
+                                    onClick={() => handleImageChange(image.url, index)}
+                                  >
+                                    <img
+                                      src={image.url}
+                                      alt="product-thumb-filter"
+                                    />
+                                  </div>
                                 ))
                               }
-                              
+
                             </div>
                           </div>
                           <div className="contents">
@@ -130,22 +158,24 @@ function SingleProduct() {
                             <div className="product-bottom-action">
                               <div className="cart-edits">
                                 <div className="quantity-edit action-item">
-                                  <button className="button">
+                                  <button className="button" onClick={handleDec}>
                                     <i className="fal fa-minus minus" />
                                   </button>
                                   <input
                                     type="text"
                                     className="input"
-                                    defaultValue={1}
+                                    value={quantity}
+                                    onChange={(e) => setQuantity(e.target.value)}
                                   />
-                                  <button className="button plus">
+                                  <button className="button plus" onClick={handleInc}>
                                     +<i className="fal fa-plus plus" />
                                   </button>
                                 </div>
                               </div>
                               <a
-                                href="#"
                                 className="rts-btn btn-primary radious-sm with-icon"
+                                style={{ cursor: 'pointer' }}
+                                onClick={handleAddtoCart}
                               >
                                 <div className="btn-text">Add To Cart</div>
                                 <div className="arrow-icon">
@@ -285,6 +315,7 @@ function SingleProduct() {
       </div>
 
       <Footer />
+      <ToastContainer autoClose={3000} closeButton={false} />
     </>
   );
 }

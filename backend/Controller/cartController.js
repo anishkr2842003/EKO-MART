@@ -51,21 +51,43 @@ export const showCart = async (req, res) => {
   }
 };
 
-export const updateCart = async(req,res)=>{
-  const {productId, userId, quantity } = req.body
+export const updateCart = async (req, res) => {
+  const { productId, userId, quantity } = req.body
 
   try {
-    const oldCart = await cartModel.findOne({user: userId})
-    if(oldCart){
-      const productIndex = oldCart.products.findIndex((p)=> p.product.toString() === productId)
-      if(productIndex > -1){
+    const oldCart = await cartModel.findOne({ user: userId })
+    if (oldCart) {
+      const productIndex = oldCart.products.findIndex((p) => p.product.toString() === productId)
+      if (productIndex > -1) {
         oldCart.products[productIndex].quantity = quantity
       }
     }
     await oldCart.save()
-    res.status(200).json({message: 'Cart updated'})
+    res.status(200).json({ message: 'Cart updated' })
   } catch (error) {
-    res.status(500).json({message: 'Cart not updated'})
+    res.status(500).json({ message: 'Cart not updated' })
+    console.log(error)
+  }
+
+}
+
+export const deleteCart = async (req, res) => {
+  const { productId, userId } = req.body
+
+  try {
+    const oldCart = await cartModel.findOne({ user: userId })
+    if (oldCart) {
+      const productIndex = oldCart.products.findIndex((p) => p.product.toString() === productId)
+      if (productIndex > -1) {
+        oldCart.products.splice(productIndex, 1)
+        await oldCart.save()
+        return res.status(200).json({ message: 'Product removed from cart' });
+      }
+      return res.status(404).json({ message: 'Product not found in cart' });
+    }
+    return res.status(404).json({ message: 'Cart not found' });
+  } catch (error) {
+    res.status(500).json({ message: 'Unable to update cart' });
     console.log(error)
   }
 
